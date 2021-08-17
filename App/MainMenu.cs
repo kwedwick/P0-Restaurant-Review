@@ -21,7 +21,7 @@ namespace App
                     break;
                 case "FindUserById":
                     var user = await Program.FindUser();
-                    Console.WriteLine($"{user.Email}, {user.UserId}");
+                    Console.WriteLine($"{user.Email}, {user.Id}");
                     break;
                 case "RestaurantDetails":
                     break;

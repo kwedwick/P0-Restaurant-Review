@@ -5,13 +5,10 @@ namespace Models
     /// </summary>
     public class Restaurant
     {
-        public int RestaurantId { get; set; }
-        public string RestaurantName {get; set; }
+        public int Id { get; set; }
+        public string Name {get; set; }
         public string Location { get; set; }
-        public int[] Ratings { get; set; }
-        public double AvgRating => Ratings.Average();
+        //public double AvgRating => Ratings.Average();
         public int ZipCode { get; set; }
-        public string[] Reviews {get; set; }
-
     }
 }

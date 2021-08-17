@@ -5,12 +5,12 @@ namespace Models
     /// </summary>
     public class Review
     {
-        public int ReviewId { get; set; }
+        public int Id { get; set; }
 
-        System.DateTime Created { get; set; }
+        System.DateTime TimeCreated { get; set; }
         public string Title { get; set; }
         public string Body {get; set; }
-        public string Username { get; set; }
+        public int Rating { get; set; }
         public int UserId {get; set; }
     }
 }

@@ -36,15 +36,4 @@ namespace Data
     //         }
     //     }
     // }
-    public class UserRepo
-    {
-        public static async Task<Member> FindUserById(int Id){
-            return new Member() {
-                Email = "kwedwick@gmail.com",
-                UserId = Id
-            };
-        }
-
-
-    }
 }
