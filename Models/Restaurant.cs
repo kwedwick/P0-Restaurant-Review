@@ -8,7 +8,8 @@ namespace Models
         public int RestaurantId { get; set; }
         public string RestaurantName {get; set; }
         public string Location { get; set; }
-        public decimal[] Rating { get; set; }
+        public int[] Ratings { get; set; }
+        public double AvgRating => Ratings.Average();
         public int ZipCode { get; set; }
         public string[] Reviews {get; set; }
 

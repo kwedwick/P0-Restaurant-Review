@@ -7,7 +7,7 @@ namespace Data
     /// <summary>
     /// This class checks if the email is valid or not. 
     /// </summary>
-    class RegexUtilities
+    public class RegexUtilities
     {
         public static bool IsValidEmail(string email)
         {

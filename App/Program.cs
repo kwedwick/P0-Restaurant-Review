@@ -7,19 +7,30 @@ namespace App
 {
     class Program
     {
+        static bool shutDownRequested = false;
         static void Main(string[] args)
         {
-            CreateMember();
+            var MainMenu = new MainMenu();
+            Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below: ");
+            while (shutDownRequested == false)
+            {
+              MainMenu.DisplayMessage().Wait();  
+            }
+            
+            
         }
-
-        static void CreateMember()
+        public static void ShutDown() {
+            shutDownRequested = true; 
+        }
+        public static void CreateMember(bool isAdmin=false)
         {
             Member newUser = new Member();
             Console.Write("Please enter your username: ");
             newUser.Username = Console.ReadLine();
             
-            Console.Write("Please enter your email ");
+            Console.Write("Please enter your email: ");
             newUser.Email = Console.ReadLine();
+            // RegexUtilities.IsValidEmail(newUser.Email);
 
             string password1;
             string password2;
@@ -44,10 +55,23 @@ namespace App
 
             newUser.Password = password1;
 
-            newUser.Role = "Member";
+            // Console.Write("Is this User an Admin?");
+            newUser.IsAdmin = isAdmin;
 
             Console.WriteLine(newUser.Username);
 
+        }
+
+        public static async Task<Member> FindUser(){
+            int UserId = -1;
+            do{
+              Console.WriteLine("What is the ID? Only Integers: ");
+            } while (int.TryParse(Console.ReadLine(), out UserId) == false);
+            
+            return await UserRepo.FindUserById(UserId);
+            
+
+            
         }
 
     }
