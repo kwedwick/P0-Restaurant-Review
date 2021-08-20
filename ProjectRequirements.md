@@ -12,27 +12,27 @@
 - add reviews to a restaurant as a user
 - view details of restaurants as a user
 - view reviews of restaurants as a user
-- calculate reviews’ average rating for each restaurant 
-- search restaurant (by name, rating, zip code, etc.) 
+- calculate reviews’ average rating for each restaurant
+- search restaurant (by name, rating, zip code, etc.)
 
 ### Models 
 
-- User 
-- Restaurant 
-- Review 
+- User
+- Restaurant
+- Review
 
 ### Note 
-- Add as much models as you would need for your design 
+- Add as much models as you would need for your design
 
-### Additional requirements 
-- Exception Handling 
-- Input validation 
-- Logging (to a file, no logging to the console) 
-- At least 10 unit tests 
-- Data should be persisted, (no data should be hard coded) 
-- You should use a DB to store data 
-- DB structure should be 3NF 
-- Should have an ER Diagram 
+### Additional requirements
+- Exception Handling
+- Input validation
+- Logging (to a file, no logging to the console)
+- At least 10 unit tests
+- Data should be persisted, (no data should be hard coded)
+- You should use a DB to store data
+- DB structure should be 3NF
+- Should have an ER Diagram
 - Code should have xml documentation 
 
 ### Tech Stack 
