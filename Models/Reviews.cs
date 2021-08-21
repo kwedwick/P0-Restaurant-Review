@@ -7,10 +7,10 @@ namespace Models
     {
         public Review() { }
 
-        public Review(int id, string title, string body, int rating)
+        public Review(int id, System.DateTime timeCreated, string title, string body, int rating)
         {
             this.Id = id;
-            this.TimeCreated = System.DateTime.Now;
+            this.TimeCreated = timeCreated;
             this.Title = title;
             this.Body = body;
             this.Rating = rating;
@@ -24,7 +24,7 @@ namespace Models
         }
         public int Id { get; set; }
 
-        System.DateTime TimeCreated { get; set; }
+        public System.DateTime TimeCreated { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public int Rating { get; set; }

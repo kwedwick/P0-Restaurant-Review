@@ -3,6 +3,7 @@ using BL;
 using System;
 using System.Collections.Generic;
 
+
 namespace UI
 {
     public class MainMenu : IMenu
@@ -11,14 +12,21 @@ namespace UI
 
         private IRestaurantsBL _restaurantbl;
 
+        private IReviewsBL _reviewsbl;
+
         public MainMenu(IUsersBL ubL)
         {
             _userbl = ubL;
         }
-        public MainMenu(IUsersBL ubL, IRestaurantsBL rbL)
+
+        public MainMenu(IReviewsBL rvsbL) {
+            _reviewsbl = rvsbL;
+        }
+        public MainMenu(IUsersBL ubL, IRestaurantsBL rbL, IReviewsBL rvsbL)
         {
             _userbl = ubL;
             _restaurantbl = rbL;
+            _reviewsbl = rvsbL;
         }
         static bool shutDownRequested = false;
         public void Start()
@@ -96,13 +104,13 @@ namespace UI
                 {
                     Console.Write("Please create a password: ");
                     password1 = Console.ReadLine();
-                } while (password1 == "");
+                } while (String.IsNullOrWhiteSpace(password1));
 
                 do
                 {
                     Console.Write("Please re-enter your password: ");
                     password2 = Console.ReadLine();
-                } while (password1 == "");
+                } while (String.IsNullOrWhiteSpace(password1));
 
                 if (password1 != password2) Console.WriteLine("Passwords don't match. Please re-enter your password.");
                 else continue;
@@ -156,7 +164,13 @@ namespace UI
         }
         private void SeeAllReviews()
         {
-            Console.WriteLine("Here are all of the Reviews");
+            Console.WriteLine("You are viewing all of the reviews\n ---------- \n");
+            List<Review> reviews = _reviewsbl.ViewAllReviews();
+            foreach (Review review in reviews)
+            {
+                Console.WriteLine($"ID: {review.Id} Created: {review.TimeCreated} Title: {review.Title} Post: {review.Body} Rating: {review.Rating}");
+            }
+
         }
 
         private void SeeRestrauntByName()
