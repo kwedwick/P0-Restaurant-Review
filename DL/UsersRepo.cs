@@ -28,7 +28,7 @@ namespace DL
         {
             //Console.WriteLine("You're in UsersRepo");
             return _context.Users.Select(
-                user => new Models.Member(user.Id, user.Email, user.FirstName, user.LastName, user.Username, user.IsAdmin)
+                user => new Models.Member(user.Id, user.FirstName, user.LastName, user.Username, user.Email, user.IsAdmin)
             ).ToList();
         }
     }

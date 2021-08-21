@@ -9,9 +9,16 @@ namespace UI
     {
         private IUsersBL _userbl;
 
-        public MainMenu(IUsersBL bL)
+        private IRestaurantsBL _restaurantbl;
+
+        public MainMenu(IUsersBL ubL)
         {
-            _userbl = bL;
+            _userbl = ubL;
+        }
+        public MainMenu(IUsersBL ubL, IRestaurantsBL rbL)
+        {
+            _userbl = ubL;
+            _restaurantbl = rbL;
         }
         static bool shutDownRequested = false;
         public void Start()
@@ -40,16 +47,16 @@ namespace UI
                         // Console.WriteLine($"{user.Email}, {user.Id}");
                         break;
                     case "2":
-                        ViewAllMembers();
+                        SeeAllMembers();
                         break;
                     case "3":
-                        ViewAllRestaurants();
+                        SeeAllRestaurants();
                         break;
                     case "4":
-                        ViewAllReviews();
+                        SeeAllReviews();
                         break;
                     case "5":
-                        ViewRestrauntByName();
+                        SeeRestrauntByName();
                         break;
                     case "6":
                         CreateRestaurant();
@@ -127,7 +134,7 @@ namespace UI
             Console.WriteLine("This is the user you're looking for: ");
         }
 
-        private void ViewAllMembers()
+        private void SeeAllMembers()
         {
             Console.WriteLine("You are viewing all of the members\n ---------- \n");
             List<Member> members = _userbl.ViewAllUsers();
@@ -138,16 +145,21 @@ namespace UI
             }
         }
 
-        private void ViewAllRestaurants()
+        private void SeeAllRestaurants()
         {
-            Console.WriteLine("You are viewing all of the restaurants");
+            Console.WriteLine("You are viewing all of the restaurants\n ---------- \n");
+            List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
+            foreach (Restaurants restaurant in restaurants)
+            {
+                Console.WriteLine($"ID: {restaurant.Id} Name:{restaurant.Name} Location: {restaurant.Location} Zip Code: {restaurant.ZipCode}");
+            }
         }
-        private void ViewAllReviews()
+        private void SeeAllReviews()
         {
             Console.WriteLine("Here are all of the Reviews");
         }
 
-        private void ViewRestrauntByName()
+        private void SeeRestrauntByName()
         {
             Console.WriteLine("Here is your restraunt: ");
         }
