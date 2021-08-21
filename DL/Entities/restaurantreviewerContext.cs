@@ -22,6 +22,7 @@ namespace DL.Entities
         public virtual DbSet<ReviewJoin> ReviewJoins { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -61,25 +62,33 @@ namespace DL.Entities
                     .WithMany(p => p.ReviewJoins)
                     .HasForeignKey(d => d.RestaurantId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReviewJoi__Resta__10566F31");
+                    .HasConstraintName("FK__ReviewJoi__Resta__29221CFB");
 
                 entity.HasOne(d => d.Review)
                     .WithMany(p => p.ReviewJoins)
                     .HasForeignKey(d => d.ReviewId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReviewJoi__Revie__0F624AF8");
+                    .HasConstraintName("FK__ReviewJoi__Revie__282DF8C2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.ReviewJoins)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ReviewJoi__UserI__114A936A");
+                    .HasConstraintName("FK__ReviewJoi__UserI__2A164134");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Username, "UQ__Users__536C85E42FCABA3D")
+                entity.HasIndex(e => e.Username, "UQ__Users__536C85E4A758EE1A")
                     .IsUnique();
+
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D105341D283C3F")
+                    .IsUnique();
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()

@@ -1,13 +1,20 @@
 using Models;
+using DL;
 using System.Collections.Generic;
 
 namespace BL
 {
     public class UsersBL : IUsersBL
     {
+        private IUsersRepo _repo;
+
+        public UsersBL(IUsersRepo repo)
+        {
+            _repo = repo;
+        }
         public List<Member> ViewAllUsers()
         {
-            return new List<Member>();
+            return _repo.GetAllMembers();
         }
     }
 }

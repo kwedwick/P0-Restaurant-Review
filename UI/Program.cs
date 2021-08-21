@@ -35,7 +35,6 @@ DbContextOptions<restaurantreviewerContext> options = new DbContextOptionsBuilde
 
 var context = new restaurantreviewerContext(options);
 
-// IMenu menu = new MainMenu(new PetBL(new PetRepo(context)));
 
-IMenu menu = new MainMenu();
+IMenu menu = new MainMenu(new UsersBL(new UsersRepo(context)));
 menu.Start();

@@ -7,7 +7,12 @@ namespace UI
 {
     public class MainMenu : IMenu
     {
+        private IUsersBL _userbl;
 
+        public MainMenu(IUsersBL bL)
+        {
+            _userbl = bL;
+        }
         static bool shutDownRequested = false;
         public void Start()
         {
@@ -66,7 +71,7 @@ namespace UI
         }
 
 
-        private static void CreateMember(bool isAdmin = false)
+        private static void CreateMember(byte isAdmin = 0)
         {
             Member newUser = new Member();
             Console.Write("Please enter your username: ");
@@ -124,7 +129,13 @@ namespace UI
 
         private void ViewAllMembers()
         {
-            Console.WriteLine("You have viewed all users");
+            Console.WriteLine("You are viewing all of the members\n ---------- \n");
+            List<Member> members = _userbl.ViewAllUsers();
+
+            foreach (Member member in members)
+            {
+                Console.WriteLine($"ID: {member.Id}, Name: {member.FirstName} {member.LastName}, Email: {member.Email}, Username: {member.Username}, Admin: {member.IsAdmin}\n");
+            }
         }
 
         private void ViewAllRestaurants()
