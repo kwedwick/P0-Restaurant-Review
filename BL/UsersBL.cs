@@ -16,5 +16,10 @@ namespace BL
         {
             return _repo.GetAllMembers();
         }
+
+        public Member AddUser(Member member)
+        {
+            return _repo.CreateUser(member);
+        }
     }
 }

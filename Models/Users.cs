@@ -23,6 +23,15 @@
         {
             this.IsAdmin = isAdmin;
         }
+
+        public Member(string firstName, string lastName, string username, string email, int isAdmin)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Username = username;
+            this.Email = email;
+            this.IsAdmin = isAdmin;
+        }
         public Member(int Id, string firstName, string lastName, string username, string email, int isAdmin)
         {
             this.Id = Id;
@@ -33,7 +42,6 @@
             this.IsAdmin = isAdmin;
         }
     
-
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

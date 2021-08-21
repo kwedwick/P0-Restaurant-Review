@@ -34,7 +34,7 @@ namespace UI
 
             Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below by entering the corresponding number: ");
 
-            string[] choices = new string[] { "[0] Create User", "[1] Find A User", "[2] View All Users", "[3] View All Restraunts", "[4] View All Reviews", "[5] Search Restaurant By Name", "[6] Add A Restraunt", "[7] Write a Review", "[8] Placeholder", "[9] Exit" };
+            string[] choices = new string[] { "[0] Sign up", "[1] Find A User", "[2] View All Users", "[3] View All Restraunts", "[4] View All Reviews", "[5] Search Restaurant By Name", "[6] Add A Restraunt", "[7] Write a Review", "[8] Placeholder", "[9] Exit" };
 
             do
             {
@@ -47,14 +47,16 @@ namespace UI
                 switch (userInput)
                 {
                     case "0":
-                        CreateMember();
+                        SignUp();
                         break;
                     case "1":
-                        FindMember(); // this is a placeholder function
+                    Console.WriteLine("Please enter user's username: ");
+                       // FindMember(); // this is a placeholder function
                         // var user = await FindUser();
                         // Console.WriteLine($"{user.Email}, {user.Id}");
                         break;
                     case "2":
+                    Console.WriteLine("You are viewing all of the members\n ---------- \n");
                         SeeAllMembers();
                         break;
                     case "3":
@@ -85,16 +87,45 @@ namespace UI
             } while (shutDownRequested == false);
         }
 
+        // private Member FindMember(List<Member> members, string prompt)
+        // {
+        //     Console.WriteLine(prompt);
+        //     Console.WriteLine("Please enter user's username: ");
 
-        private static void CreateMember(byte isAdmin = 0)
+
+
+        //     Console.WriteLine("This is the user you're looking for: ");
+        // }
+
+
+        private void SignUp()
         {
-            Member newUser = new Member();
-            Console.Write("Please enter your username: ");
-            newUser.Username = Console.ReadLine();
+            Member userToAdd = new Member();
 
-            Console.Write("Please enter your email: ");
-            newUser.Email = Console.ReadLine();
-            // RegexUtilities.IsValidEmail(newUser.Email);
+            do{
+               Console.Write("Please enter your first name: ");
+                userToAdd.FirstName= Console.ReadLine();
+            // RegexUtilities.IsValidEmail(newUser.Email); 
+            } while (String.IsNullOrWhiteSpace(userToAdd.FirstName));
+
+            do{
+               Console.Write("Please enter your last name: ");
+                userToAdd.LastName= Console.ReadLine();
+            // RegexUtilities.IsValidEmail(newUser.Email); 
+            } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
+
+            do{
+              Console.Write("Please enter your username: ");
+                userToAdd.Username = Console.ReadLine();  
+            } while (String.IsNullOrWhiteSpace(userToAdd.Username));
+            
+            do{
+               Console.Write("Please enter your email: ");
+                userToAdd.Email= Console.ReadLine();
+            // RegexUtilities.IsValidEmail(newUser.Email); 
+            } while (String.IsNullOrWhiteSpace(userToAdd.Email));
+
+            //TODO: NEED TO CHECK EMAIL AGAINST DATABASE
 
             string password1;
             string password2;
@@ -117,13 +148,22 @@ namespace UI
 
             } while (password1 != password2);
 
-            newUser.Password = password1;
+            userToAdd.Password = password1;
 
             // Console.Write("Is this User an Admin?");
-            newUser.IsAdmin = isAdmin;
+            userToAdd.IsAdmin = 0;
 
-            Console.WriteLine(newUser.Username);
+            try
+            {
+                userToAdd = _userbl.AddUser(userToAdd);
 
+                Console.WriteLine("Member Created!\n \n");
+                Console.WriteLine($"ID: {userToAdd.Id}, Name: {userToAdd.FirstName} {userToAdd.LastName}, Email: {userToAdd.Email}, Username: {userToAdd.Username}, Admin: {userToAdd.IsAdmin}\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+            }
         }
 
         // private static async Task<Member> FindUser()
@@ -137,14 +177,9 @@ namespace UI
         //     // return await UserRepo.FindUserById(UserId);
         // }
 
-        private void FindMember()
-        {
-            Console.WriteLine("This is the user you're looking for: ");
-        }
 
         private void SeeAllMembers()
         {
-            Console.WriteLine("You are viewing all of the members\n ---------- \n");
             List<Member> members = _userbl.ViewAllUsers();
 
             foreach (Member member in members)

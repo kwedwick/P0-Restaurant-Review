@@ -6,6 +6,8 @@ namespace DL
     public interface IUsersRepo
     {
         List<Member> GetAllMembers();
+
+        Member CreateUser(Member member);
     }
 }
 

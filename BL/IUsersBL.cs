@@ -6,5 +6,7 @@ namespace BL
     public interface IUsersBL
     {
         List<Member> ViewAllUsers();
+
+        Member AddUser(Member member);
     }
 }

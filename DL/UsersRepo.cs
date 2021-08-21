@@ -31,5 +31,20 @@ namespace DL
                 user => new Models.Member(user.Id, user.FirstName, user.LastName, user.Username, user.Email, user.IsAdmin)
             ).ToList();
         }
+
+        public Models.Member CreateUser(Models.Member member)
+        {
+            _context.Users.Add(
+                new Entities.User{
+                    FirstName = member.FirstName,
+                    LastName = member.LastName,
+                    Username = member.Username,
+                    Email = member.Email,
+                    Password = member.Password
+                }
+            );
+            _context.SaveChanges();
+            return member;
+        }
     }
 }
