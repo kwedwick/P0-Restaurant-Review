@@ -8,5 +8,7 @@ namespace BL
         List<Member> ViewAllUsers();
 
         Member AddUser(Member member);
+
+        Member SearchUserById(int id);
     }
 }

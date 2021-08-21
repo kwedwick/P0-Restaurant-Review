@@ -22,5 +22,10 @@ namespace BL
         {
             return _repo.GetRestaurantByName(name);
         }
+
+        public Restaurants AddRestaurant(Restaurants restaurant)
+        {
+            return _repo.CreateRestaurant(restaurant);
+        }
     }
 }

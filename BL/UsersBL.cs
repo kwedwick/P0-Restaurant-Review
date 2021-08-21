@@ -21,5 +21,10 @@ namespace BL
         {
             return _repo.CreateUser(member);
         }
+
+        public Member SearchUserById(int id)
+        {
+            return _repo.GetUserById(id);
+        }
     }
 }

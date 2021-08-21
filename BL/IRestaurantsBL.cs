@@ -8,5 +8,7 @@ namespace BL
         List<Restaurants> ViewAllRestaurants();
 
         Restaurants SearchRestaurantByName(string name);
+
+        Restaurants AddRestaurant(Restaurants restaurant);
     }
 }

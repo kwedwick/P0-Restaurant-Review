@@ -26,14 +26,28 @@ namespace DL
         {
             Entities.Restaurant foundRestaurant = _context.Restaurants.FirstOrDefault(restaurant => restaurant.Name == name);
 
-            if( foundRestaurant != null)
+            if (foundRestaurant != null)
             {
                 return new Models.Restaurants(foundRestaurant.Id, foundRestaurant.Name, foundRestaurant.Location, (int)foundRestaurant.Zipcode);
             }
             return new Models.Restaurants();
         }
+
+        public Models.Restaurants CreateRestaurant(Models.Restaurants restaurant)
+        {
+            _context.Add(
+                new Entities.Restaurant
+                {
+                    Name = restaurant.Name,
+                    Location = restaurant.Location,
+                    Zipcode = restaurant.ZipCode
+                }
+            );
+            _context.SaveChanges();
+            return restaurant;
+        }
+
+
+
     }
-
-
-    
 }

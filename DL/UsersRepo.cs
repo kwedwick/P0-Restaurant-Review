@@ -46,5 +46,18 @@ namespace DL
             _context.SaveChanges();
             return member;
         }
+
+        public Models.Member GetUserById(int id)
+        {
+            Entities.User foundUser = _context.Users.FirstOrDefault(
+                user => user.Id == id
+            );
+
+            if (foundUser != null)
+            {
+                return new Models.Member(foundUser.Id, foundUser.FirstName, foundUser.LastName, foundUser.Username, foundUser.Email, foundUser.IsAdmin);
+            }
+            return new Models.Member();
+        }
     }
 }

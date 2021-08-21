@@ -19,7 +19,8 @@ namespace UI
             _userbl = ubL;
         }
 
-        public MainMenu(IReviewsBL rvsbL) {
+        public MainMenu(IReviewsBL rvsbL)
+        {
             _reviewsbl = rvsbL;
         }
         public MainMenu(IUsersBL ubL, IRestaurantsBL rbL, IReviewsBL rvsbL)
@@ -50,26 +51,23 @@ namespace UI
                         SignUp();
                         break;
                     case "1":
-                    Console.WriteLine("Please enter user's username: ");
-                       // FindMember(); // this is a placeholder function
-                        // var user = await FindUser();
-                        // Console.WriteLine($"{user.Email}, {user.Id}");
+                        FindUsersByIdUI();
                         break;
                     case "2":
-                    Console.WriteLine("You are viewing all of the members\n ---------- \n");
-                        SeeAllMembers();
+                        Console.WriteLine("You are viewing all of the members\n ---------- \n");
+                        SeeAllMembers(); // done
                         break;
                     case "3":
-                        SeeAllRestaurants();
+                        SeeAllRestaurants(); // done
                         break;
                     case "4":
-                        SeeAllReviews();
+                        SeeAllReviews(); // done
                         break;
                     case "5":
-                        SeeRestrauntByName();
+                        SeeRestrauntByName(); // done
                         break;
                     case "6":
-                        CreateRestaurant();
+                        CreateRestaurant(); // done, need to return id
                         break;
                     case "7":
                         CreateReview();
@@ -102,27 +100,29 @@ namespace UI
         {
             Member userToAdd = new Member();
 
-            do{
-               Console.Write("Please enter your first name: ");
-                userToAdd.FirstName= Console.ReadLine();
-            // RegexUtilities.IsValidEmail(newUser.Email); 
+            do
+            {
+                Console.Write("Please enter your FIRST name: ");
+                userToAdd.FirstName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.FirstName));
 
-            do{
-               Console.Write("Please enter your last name: ");
-                userToAdd.LastName= Console.ReadLine();
-            // RegexUtilities.IsValidEmail(newUser.Email); 
+            do
+            {
+                Console.Write("Please enter your LAST name: ");
+                userToAdd.LastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
 
-            do{
-              Console.Write("Please enter your username: ");
-                userToAdd.Username = Console.ReadLine();  
+            do
+            {
+                Console.Write("Please enter your username: ");
+                userToAdd.Username = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.Username));
-            
-            do{
-               Console.Write("Please enter your email: ");
-                userToAdd.Email= Console.ReadLine();
-            // RegexUtilities.IsValidEmail(newUser.Email); 
+
+            do
+            {
+                Console.Write("Please enter your email: ");
+                userToAdd.Email = Console.ReadLine();
+                // RegexUtilities.IsValidEmail(newUser.Email); 
             } while (String.IsNullOrWhiteSpace(userToAdd.Email));
 
             //TODO: NEED TO CHECK EMAIL AGAINST DATABASE
@@ -168,12 +168,54 @@ namespace UI
 
         private void CreateRestaurant()
         {
-            Console.WriteLine("Please enter restaurant details: ");
+            Restaurants restaurantToAdd = new Restaurants();
+            Console.WriteLine("\nYou're adding a new restaurant!\n");
+
+            do
+            {
+                Console.Write("Please enter the restaurant name: ");
+                restaurantToAdd.Name = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(restaurantToAdd.Name));
+
+            do
+            {
+                Console.Write("Please enter the location. Format: Address, City, State): ");
+                restaurantToAdd.Location = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(restaurantToAdd.Location));
+
+            int zipcode = 0;
+            while (zipcode <= 10000)
+            {
+                Console.WriteLine("Please enter the zip code: ");
+                try
+                {
+                    zipcode = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("{0}, You didn't enter only numbers. Please try again.", ex);
+                }
+
+            }
+            restaurantToAdd.ZipCode = zipcode;
+
+            try
+            {
+                restaurantToAdd = _restaurantbl.AddRestaurant(restaurantToAdd);
+                Console.WriteLine("Member Created!\n \n");
+                Console.WriteLine($"ID: {restaurantToAdd.Id}, Name: {restaurantToAdd.Name}, Location: {restaurantToAdd.Location} {restaurantToAdd.ZipCode}\n");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+            }
         }
 
         private void CreateReview()
         {
             Console.WriteLine("Please enter your review details below: ");
+
         }
 
         // private static async Task<Member> FindUser()
@@ -222,17 +264,19 @@ namespace UI
         {
             string input;
 
-            do{
+            do
+            {
                 Console.WriteLine("Enter the name of the restaurant to search:");
                 input = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(input));
-            
+
             Restaurants foundRestaurant = _restaurantbl.SearchRestaurantByName(input);
 
-            if(foundRestaurant.Name is null)
+            if (foundRestaurant.Name is null)
             {
                 Console.WriteLine($"Sorry, {input} wasn't found. Please try again.");
-            } else
+            }
+            else
             {
                 Console.WriteLine("We found {0}!", foundRestaurant.Name);
             }
@@ -240,8 +284,38 @@ namespace UI
             return foundRestaurant;
         }
 
+        private Member FindUsersByIdUI()
+        {
+            int input = -1;
+            while (input < 0)
+            {
+                Console.WriteLine("Please enter a user's ID (numbers only): ");
+                try
+                {
+                    input = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("{0}, You didn't enter only numbers. Please try again.", ex);
+                }
 
-        
+            }
+            Member foundUser = _userbl.SearchUserById(input);
+
+            if (foundUser.Username is null)
+            {
+                Console.WriteLine($"Sorry, {input} wasn't found. Please try again.");
+            }
+            else
+            {
+                Console.WriteLine("We found {0}! ID: {1}", foundUser.Username, foundUser.Id);
+            }
+
+            return foundUser;
+        }
+
+
+
 
         private void DeleteUser()
         {

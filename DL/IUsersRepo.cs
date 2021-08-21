@@ -8,6 +8,8 @@ namespace DL
         List<Member> GetAllMembers();
 
         Member CreateUser(Member member);
+
+        Member GetUserById(int id);
     }
 }
 

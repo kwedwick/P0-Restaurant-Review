@@ -7,5 +7,7 @@ namespace DL
         List<Restaurants> GetAllRestaurants();
 
         Restaurants GetRestaurantByName(string name);
+
+        Restaurants CreateRestaurant(Restaurants restaurant);
     }
 }
