@@ -6,5 +6,7 @@ namespace BL
     public interface IRestaurantsBL
     {
         List<Restaurants> ViewAllRestaurants();
+
+        Restaurants SearchRestaurantByName(string name);
     }
 }

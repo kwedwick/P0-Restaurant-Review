@@ -34,7 +34,7 @@ namespace UI
 
             Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below by entering the corresponding number: ");
 
-            string[] choices = new string[] { "[0] Sign up", "[1] Find A User", "[2] View All Users", "[3] View All Restraunts", "[4] View All Reviews", "[5] Search Restaurant By Name", "[6] Add A Restraunt", "[7] Write a Review", "[8] Placeholder", "[9] Exit" };
+            string[] choices = new string[] { "[0] Sign up", "[1] Find A User", "[2] View All Users", "[3] View All Restraunts", "[4] View All Reviews", "[5] Search Restaurant By Name", "[6] Add A Restraunt", "[7] Write a Review", "[8] Delete User", "[9] Exit" };
 
             do
             {
@@ -75,7 +75,7 @@ namespace UI
                         CreateReview();
                         break;
                     case "8":
-                        // Placeholder
+                        DeleteUser();
                         break;
                     case "9":
                         ShutDown();
@@ -166,6 +166,16 @@ namespace UI
             }
         }
 
+        private void CreateRestaurant()
+        {
+            Console.WriteLine("Please enter restaurant details: ");
+        }
+
+        private void CreateReview()
+        {
+            Console.WriteLine("Please enter your review details below: ");
+        }
+
         // private static async Task<Member> FindUser()
         // {
         //     int UserId = -1;
@@ -208,19 +218,35 @@ namespace UI
 
         }
 
-        private void SeeRestrauntByName()
+        private Restaurants SeeRestrauntByName()
         {
-            Console.WriteLine("Here is your restraunt: ");
+            string input;
+
+            do{
+                Console.WriteLine("Enter the name of the restaurant to search:");
+                input = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(input));
+            
+            Restaurants foundRestaurant = _restaurantbl.SearchRestaurantByName(input);
+
+            if(foundRestaurant.Name is null)
+            {
+                Console.WriteLine($"Sorry, {input} wasn't found. Please try again.");
+            } else
+            {
+                Console.WriteLine("We found {0}!", foundRestaurant.Name);
+            }
+
+            return foundRestaurant;
         }
 
-        private void CreateRestaurant()
-        {
-            Console.WriteLine("Please enter restaurant details: ");
-        }
 
-        private void CreateReview()
+        
+
+        private void DeleteUser()
         {
-            Console.WriteLine("Please enter your review details below: ");
+            Console.WriteLine("Delete User Requested: ");
+
         }
 
         private static void ShutDown()

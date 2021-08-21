@@ -21,6 +21,17 @@ namespace DL
                 restaurant => new Models.Restaurants(restaurant.Id, restaurant.Name, restaurant.Location, (int)restaurant.Zipcode)
             ).ToList();
         }
+
+        public Models.Restaurants GetRestaurantByName(string name)
+        {
+            Entities.Restaurant foundRestaurant = _context.Restaurants.FirstOrDefault(restaurant => restaurant.Name == name);
+
+            if( foundRestaurant != null)
+            {
+                return new Models.Restaurants(foundRestaurant.Id, foundRestaurant.Name, foundRestaurant.Location, (int)foundRestaurant.Zipcode);
+            }
+            return new Models.Restaurants();
+        }
     }
 
 
