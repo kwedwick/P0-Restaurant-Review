@@ -22,11 +22,46 @@ namespace Models
             this.Body = body;
             this.Rating = rating;
         }
+
         public int Id { get; set; }
 
         public System.DateTime TimeCreated { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public int Rating { get; set; }
+    }
+
+    public class RestaurantReviews : Review
+    {
+        public RestaurantReviews() {}
+
+        public RestaurantReviews(int id, string title, string body, int rating, string username) : this()
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Body = body;
+            this.Rating = rating;
+            this.Username = username;
+        }
+        public RestaurantReviews(int id, string title, string body, int rating, string username, string restaurantName) : this()
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Body = body;
+            this.Rating = rating;
+            this.Username = username;
+            this.RestaurantName = restaurantName;
+        }
+
+        public int Id { get; set; }
+
+        public System.DateTime TimeCreated { get; set; }
+        public string Title { get; set; }
+        public string Body { get; set; }
+        public int Rating { get; set; }
+
+        public string Username {get; set;}
+
+        public string RestaurantName {get; set;}
     }
 }

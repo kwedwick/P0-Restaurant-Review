@@ -8,5 +8,7 @@ namespace DL
         List<Review> GetAllReviews();
 
         Review CreateReview(Review review);
+
+        List<RestaurantReviews> GetReviewsbyRestaurantId(int id);
     }
 }

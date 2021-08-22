@@ -22,5 +22,10 @@ namespace BL
         {
             return _repo.CreateReview(review);
         }
+
+        public List<RestaurantReviews> GetReviewsbyRestaurantIdBL(int id)
+        {
+            return _repo.GetReviewsbyRestaurantId(id);
+        }
     }
 }
