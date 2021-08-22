@@ -34,16 +34,16 @@ namespace DL
 
         public Models.Member CreateUser(Models.Member member)
         {
-            _context.Users.Add(
-                new Entities.User{
+            var newEntity = new Entities.User{
                     FirstName = member.FirstName,
                     LastName = member.LastName,
                     Username = member.Username,
                     Email = member.Email,
                     Password = member.Password
-                }
-            );
+                };
+            _context.Users.Add(newEntity);
             _context.SaveChanges();
+            member.Id = newEntity.Id;
             return member;
         }
 
