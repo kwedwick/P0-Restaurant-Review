@@ -8,6 +8,7 @@ namespace UI
 {
     public class MainMenu : IMenu
     {
+       
         private IUsersBL _userbl;
 
         private IRestaurantsBL _restaurantbl;
@@ -35,6 +36,37 @@ namespace UI
 
             Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below by entering the corresponding number: ");
 
+            string[] mainMenuChoices = new string[] { "[0] Login", "[1] Sign up!", "[2] View All Restaurants", "[3] Shut down"};
+
+            do {
+                foreach (string choice in mainMenuChoices)
+                {
+                    Console.WriteLine($"{choice}");
+                }
+                string startingInput = Console.ReadLine();
+                switch (startingInput)
+                {
+                    case "0":
+                        Login();
+                        break;
+                    case "1":
+                        SignUp();
+                        break;
+                    case "2":
+                        SeeAllRestaurants();
+                        break;
+                    case "3":
+                        ShutDown();
+                        break;
+                    default:
+                        Console.WriteLine("Please type your answer correctly!");
+                        break;
+                }
+
+            } while (shutDownRequested == false);
+
+            shutDownRequested = false;
+
             string[] choices = new string[] { "[0] Sign up", "[1] Find A User", "[2] View All Users", "[3] View All Restraunts", "[4] View All Reviews", "[5] Search Restaurant By Name", "[6] Add A Restraunt", "[7] Write a Review", "[8] Delete User", "[9] Exit" };
 
             do
@@ -47,9 +79,6 @@ namespace UI
                 string userInput = Console.ReadLine();
                 switch (userInput)
                 {
-                    case "11":
-                        Login();
-                        break;
                     case "0":
                         SignUp();
                         break;
@@ -73,7 +102,7 @@ namespace UI
                         CreateRestaurant(); // done, need to return id
                         break;
                     case "7":
-                        CreateReview();
+                        CreateReviewUI();
                         break;
                     case "8":
                         DeleteUser();
@@ -248,9 +277,61 @@ namespace UI
             }
         }
 
-        private void CreateReview()
+        private void CreateReviewUI()
         {
+            Review newReview = new Review();
+            newReview.TimeCreated = DateTime.Now;
             Console.WriteLine("Please enter your review details below: ");
+
+            string title;
+            do
+            {
+                Console.WriteLine("Enter the Title of your review:");
+                title = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(title));
+            newReview.Title = title;
+
+            string body;
+            do
+            {
+                Console.WriteLine("Enter the Body of your review:");
+                body = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(body));
+            newReview.Body = body;
+
+            int userRating = 0;
+            Console.WriteLine("Please enter your Rating 1-5: ");
+            do
+            {
+                try
+                {
+                    userRating = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("{0}, You didn't enter only numbers or a number between 1-5. Please try again.", ex);
+                }
+                // if(userRating < 1 || userRating > 5) {
+                //     userRating = 0;
+                //     Console.WriteLine
+                // }
+                Console.WriteLine("You must enter a number between 1-5");
+
+            } while (userRating < 1 || userRating > 5);
+            newReview.Rating = userRating;
+
+            try
+            {
+                newReview = _reviewsbl.AddReview(newReview);
+                Console.WriteLine("Member Created!\n \n");
+                Console.WriteLine($"ID: {newReview.Id}, Title: {newReview.Title}, Body: {newReview.Body}\n Rating: {newReview.Rating}\n");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+            }
+
 
         }
 

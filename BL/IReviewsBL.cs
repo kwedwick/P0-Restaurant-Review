@@ -5,5 +5,7 @@ namespace BL
     public interface IReviewsBL
     {
         List<Review> ViewAllReviews();
+
+        Review AddReview(Review review);
     }
 }

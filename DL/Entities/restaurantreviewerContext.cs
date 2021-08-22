@@ -44,7 +44,7 @@ namespace DL.Entities
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TimeCreated).HasColumnType("datetime");
+                entity.Property(e => e.TimeCreated).HasColumnType("DateTime2(7)");
 
                 entity.Property(e => e.Title)
                     .IsRequired()

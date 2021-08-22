@@ -21,5 +21,17 @@ namespace DL
                 review => new Models.Review(review.Id, review.TimeCreated, review.Title, review.Body, review.Rating)
                 ).ToList();
         }
+        
+        public Models.Review CreateReview(Models.Review review){
+            _context.Reviews.Add(
+                new Entities.Review{
+                    Title = review.Title,
+                    Body = review.Body,
+                    Rating = review.Rating
+                }
+            );
+            _context.SaveChanges();
+            return review;
+        }
     }
 }

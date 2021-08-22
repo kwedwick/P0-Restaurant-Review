@@ -17,5 +17,10 @@ namespace BL
         {
             return _repo.GetAllReviews();
         }
+
+        public Review AddReview(Review review)
+        {
+            return _repo.CreateReview(review);
+        }
     }
 }
