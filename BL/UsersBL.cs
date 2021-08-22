@@ -26,5 +26,10 @@ namespace BL
         {
             return _repo.GetUserById(id);
         }
+
+        public Member CheckUserLogin(Member member)
+        {
+            return _repo.GetUserLogin(member);
+        }
     }
 }

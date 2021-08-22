@@ -59,5 +59,16 @@ namespace DL
             }
             return new Models.Member();
         }
+
+        public Models.Member GetUserLogin(Member member)
+        {
+            Entities.User foundUser = _context.Users.FirstOrDefault(user => user.Username == member.Username && user.Password == member.Password);
+
+            if (foundUser != null)
+            {
+                return new Models.Member(foundUser.Id, foundUser.FirstName, foundUser.LastName, foundUser.Username, foundUser.Email, foundUser.IsAdmin);
+            }
+            return new Models.Member();
+        }
     }
 }

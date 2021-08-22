@@ -10,6 +10,8 @@ namespace DL
         Member CreateUser(Member member);
 
         Member GetUserById(int id);
+
+        Member GetUserLogin(Member member);
     }
 }
 

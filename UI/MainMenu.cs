@@ -47,6 +47,9 @@ namespace UI
                 string userInput = Console.ReadLine();
                 switch (userInput)
                 {
+                    case "11":
+                        Login();
+                        break;
                     case "0":
                         SignUp();
                         break;
@@ -162,8 +165,41 @@ namespace UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+                Console.WriteLine($"This is the error: {ex}.\nPlease make changes accordingly and try again!");
             }
+        }
+
+        private void Login()
+        {
+            Member checkUser = new Member();
+            do
+            {
+                Console.Write("Please enter your username: ");
+                checkUser.Username = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(checkUser.Username));
+
+            string password;
+            do
+            {
+                Console.Write("Please enter a password: ");
+                password = Console.ReadLine();
+            } while (String.IsNullOrWhiteSpace(password));
+            checkUser.Password = password;
+            checkUser = _userbl.CheckUserLogin(checkUser);
+
+            if (checkUser.Username != null)
+            {
+                try
+                {
+                    Console.WriteLine("Welcome {0}!", checkUser.Username);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("{0},\n There was an error with your login. User not found or wrong username/password. Please try agaiin.", ex);
+                }
+            }
+            Console.WriteLine("User not found. Please try again.");
         }
 
         private void CreateRestaurant()
@@ -313,8 +349,6 @@ namespace UI
 
             return foundUser;
         }
-
-
 
 
         private void DeleteUser()

@@ -10,5 +10,7 @@ namespace BL
         Member AddUser(Member member);
 
         Member SearchUserById(int id);
+
+        Member CheckUserLogin(Member member);
     }
 }
