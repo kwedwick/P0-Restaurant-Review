@@ -3,6 +3,7 @@ using BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 
 
 namespace UI
@@ -42,6 +43,12 @@ namespace UI
             _reviewsbl = rvsbL;
             _currentSession = session;
             BuildCommandList();
+            Log.Logger=new LoggerConfiguration()
+                        .MinimumLevel.Debug()
+                        .WriteTo.Console()
+                        .WriteTo.File("../logs/restaurantviewerlogs.txt", rollingInterval:RollingInterval.Day)
+                        .CreateLogger();
+            Log.Information("UI begining");
         }
         static bool shutDownRequested = false;
 
@@ -167,12 +174,12 @@ namespace UI
             var command = AllCommands.First(i => i.Command == Input);
             if (command is null)
             {
-                Console.WriteLine("Invalid Command.  Try Again.");
+                Log.Error("Invalid Command.  Try Again.");
                 return false;
             }
             if (command?.Execution is null)
             {
-                Console.WriteLine("System error");
+                Log.Error("System error");
                 return false;
             }
             /// runs the assigned function per the user selected command
@@ -362,7 +369,7 @@ namespace UI
                     password2 = Console.ReadLine();
                 } while (String.IsNullOrWhiteSpace(password1));
 
-                if (password1 != password2) Console.WriteLine("Passwords don't match. Please re-enter your password.");
+                if (password1 != password2) Log.Error("Passwords don't match. Please re-enter your password.");
                 else continue;
 
             } while (password1 != password2);
@@ -387,7 +394,7 @@ namespace UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"This is the error: {ex}.\nPlease make changes accordingly and try again!");
+                Log.Error($"This is the error: {ex}.\nPlease make changes accordingly and try again!");
             }
         }
 
@@ -423,12 +430,12 @@ namespace UI
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("{0},\n There was an error with your login. User not found or wrong username/password. Please try agaiin.", ex);
+                    Log.Error("{0},\n There was an error with your login. User not found or wrong username/password. Please try agaiin.", ex);
                 }
             }
             else
             {
-                Console.WriteLine("User not found. Select a new option.");
+                Log.Debug("User not found. Select a new option.");
             }
         }
 
@@ -437,6 +444,10 @@ namespace UI
 /// </summary>
         private void CreateRestaurant()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in to do this!");
+                return;
+            }
             Restaurants restaurantToAdd = new Restaurants();
             Console.WriteLine("\nYou're adding a new restaurant!\n");
 
@@ -477,7 +488,7 @@ namespace UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+                Log.Error($"This is the error: {ex}. Please make changes accordingly and try again!");
             }
         }
 /// <summary>
@@ -485,8 +496,19 @@ namespace UI
 /// </summary>
         private void CreateReviewUI()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in to do this!");
+                return;
+            }
+            CreateReview newReview = new CreateReview();
+
+            newReview.UserId = _currentSession.CurrentUser.Id;
+
+            List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
+            Restaurants foundRestaurant = SelectAReviewByRestaurantIdUI(restaurants, "Pick a restaurant by entering the corresponding [number]: ");
+            newReview.RestaurantId = foundRestaurant.Id;
+        
             
-            Review newReview = new Review();
             newReview.TimeCreated = DateTime.Now;
             Console.WriteLine("Please enter your review details below: ");
 
@@ -516,7 +538,7 @@ namespace UI
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("{0}, You didn't enter only numbers or a number between 1-5. Please try again.", ex);
+                    Log.Error("{0}, You didn't enter only numbers or a number between 1-5. Please try again.", ex);
                 }
                 // if(userRating < 1 || userRating > 5) {
                 //     userRating = 0;
@@ -536,26 +558,19 @@ namespace UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
+                Log.Error($"This is the error: {ex}. Please make changes accordingly and try again!");
             }
 
 
         }
 
-        // private static async Task<Member> FindUser()
-        // {
-        //     int UserId = -1;
-        //     do
-        //     {
-        //         Console.WriteLine("What is the ID? Only Integers: ");
-        //     } while (int.TryParse(Console.ReadLine(), out UserId) == false);
-
-        //     // return await UserRepo.FindUserById(UserId);
-        // }
-
 
         private void SeeAllMembers()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
             List<Member> members = _userbl.ViewAllUsers();
 
             foreach (Member member in members)
@@ -575,6 +590,10 @@ namespace UI
         }
         private void SeeAllReviews()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
             Console.WriteLine("You are viewing all of the reviews\n ---------- \n");
             List<Review> reviews = _reviewsbl.ViewAllReviews();
             foreach (Review review in reviews)
@@ -598,7 +617,7 @@ namespace UI
 
             if (foundRestaurant.Name is null)
             {
-                Console.WriteLine($"Sorry, {input} wasn't found. Please try again.");
+                Log.Error($"Sorry, {input} wasn't found. Please try again.");
             }
             else
             {
@@ -650,6 +669,10 @@ namespace UI
 
         private void FindUsersByIdUI()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
             int input = -1;
             while (input < 0)
             {
@@ -668,17 +691,22 @@ namespace UI
 
             if (foundUser.Username is null)
             {
-                Console.WriteLine($"Sorry, {input} wasn't found. Please try again.");
+                Log.Error($"Sorry, {input} wasn't found. Please try again.");
             }
             else
             {
-                Console.WriteLine("We found {0}! ID: {1}", foundUser.Username, foundUser.Id);
+                Log.Debug("We found {0}! ID: {1}", foundUser.Username, foundUser.Id);
             }
         }
 
 
         private void DeleteUser()
         {
+            if(IsLoggedIn == false){
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
+            
             Console.WriteLine("Delete User Requested: ");
 
         }

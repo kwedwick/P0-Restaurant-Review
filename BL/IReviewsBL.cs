@@ -6,7 +6,7 @@ namespace BL
     {
         List<Review> ViewAllReviews();
 
-        Review AddReview(Review review);
+        CreateReview AddReview(CreateReview review);
 
         List<RestaurantReviews> GetReviewsbyRestaurantIdBL(int id);
     }

@@ -22,17 +22,27 @@ namespace DL
                 ).ToList();
         }
 
-        public Models.Review CreateReview(Models.Review review)
+        public Models.CreateReview CreateReview(Models.CreateReview review)
         {
-            _context.Reviews.Add(
-                new Entities.Review
+            var newEntity = new Entities.Review
                 {
                     Title = review.Title,
                     Body = review.Body,
                     Rating = review.Rating
+                };
+            _context.Reviews.Add(newEntity);
+            _context.SaveChanges();
+            review.Id = newEntity.Id;
+
+            _context.ReviewJoins.Add(
+                new Entities.ReviewJoin{
+                    UserId = review.UserId,
+                    RestaurantId = review.RestaurantId,
+                    ReviewId = review.Id
                 }
             );
             _context.SaveChanges();
+
             return review;
         }
 

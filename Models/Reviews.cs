@@ -52,16 +52,26 @@ namespace Models
             this.Username = username;
             this.RestaurantName = restaurantName;
         }
-
-        public int Id { get; set; }
-
-        public System.DateTime TimeCreated { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public int Rating { get; set; }
-
         public string Username {get; set;}
 
         public string RestaurantName {get; set;}
+    }
+
+    public class CreateReview : Review
+    {
+         public CreateReview() {}
+        public CreateReview(int id, string title, string body, int rating, int userId, int restaurantId) : this()
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Body = body;
+            this.Rating = rating;
+            this.UserId = userId;
+            this.RestaurantId = restaurantId;
+        }
+
+        public int UserId {get; set;}
+
+        public int RestaurantId {get; set;}
     }
 }

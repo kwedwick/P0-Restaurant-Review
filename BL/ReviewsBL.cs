@@ -18,7 +18,7 @@ namespace BL
             return _repo.GetAllReviews();
         }
 
-        public Review AddReview(Review review)
+        public CreateReview AddReview(CreateReview review)
         {
             return _repo.CreateReview(review);
         }

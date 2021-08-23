@@ -29,7 +29,7 @@
 - Input validation - done
 - Logging (to a file, no logging to the console)
 - At least 10 unit tests
-- Data should be persisted, (no data should be hard coded)
+- Data should be persisted, (no data should be hard coded) - done
 - You should use a DB to store data - done
 - DB structure should be 3NF - done
 - Should have an ER Diagram - done

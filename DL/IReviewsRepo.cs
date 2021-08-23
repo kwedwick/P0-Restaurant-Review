@@ -7,7 +7,7 @@ namespace DL
     {
         List<Review> GetAllReviews();
 
-        Review CreateReview(Review review);
+        CreateReview CreateReview(CreateReview review);
 
         List<RestaurantReviews> GetReviewsbyRestaurantId(int id);
     }
