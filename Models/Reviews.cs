@@ -43,7 +43,7 @@ namespace Models
             this.Rating = rating;
             this.Username = username;
         }
-        public RestaurantReviews(int id, string title, string body, int rating, string username, string restaurantName) : this()
+        public RestaurantReviews(int id, string title, string body, int rating, string username, string restaurantName, decimal avgRating) : this()
         {
             this.Id = id;
             this.Title = title;
@@ -51,10 +51,13 @@ namespace Models
             this.Rating = rating;
             this.Username = username;
             this.RestaurantName = restaurantName;
+            this.AvgRating = avgRating;
         }
         public string Username {get; set;}
 
         public string RestaurantName {get; set;}
+
+        public decimal AvgRating {get; set; }
     }
 
     public class CreateReview : Review

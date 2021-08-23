@@ -10,32 +10,32 @@ namespace UI
 {
     public class MainMenu : IMenu
     {
-/// <summary>
-/// calling the BL layers for users/restaurants and reviewslayer
-/// </summary>
+        /// <summary>
+        /// calling the BL layers for users/restaurants and reviewslayer
+        /// </summary>
         private IUsersBL _userbl;
 
         private IRestaurantsBL _restaurantbl;
 
         private IReviewsBL _reviewsbl;
 
-    /// <summary>
-    /// CurrentSession aka logged in user? is instantiated
-    /// IsLoggedIn is how we filter the commands
-    /// </summary>
+        /// <summary>
+        /// CurrentSession aka logged in user? is instantiated
+        /// IsLoggedIn is how we filter the commands
+        /// </summary>
         private Session _currentSession;
 
         public bool IsLoggedIn => _currentSession.CurrentUser is not null;
 
         private List<Commands> AllCommands = new();
 
-/// <summary>
-/// the MainMenu constructer that is taking in all of the layers
-/// </summary>
-/// <param name="ubL"></param>
-/// <param name="rbL"></param>
-/// <param name="rvsbL"></param>
-/// <param name="session"></param>
+        /// <summary>
+        /// the MainMenu constructer that is taking in all of the layers
+        /// </summary>
+        /// <param name="ubL"></param>
+        /// <param name="rbL"></param>
+        /// <param name="rvsbL"></param>
+        /// <param name="session"></param>
         public MainMenu(IUsersBL ubL, IRestaurantsBL rbL, IReviewsBL rvsbL, Session session)
         {
             _userbl = ubL;
@@ -43,18 +43,18 @@ namespace UI
             _reviewsbl = rvsbL;
             _currentSession = session;
             BuildCommandList();
-            Log.Logger=new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration()
                         .MinimumLevel.Debug()
                         .WriteTo.Console()
-                        .WriteTo.File("../logs/restaurantviewerlogs.txt", rollingInterval:RollingInterval.Day)
+                        .WriteTo.File("../logs/restaurantviewerlogs.txt", rollingInterval: RollingInterval.Day)
                         .CreateLogger();
             Log.Information("UI begining");
         }
         static bool shutDownRequested = false;
 
-/// <summary>
-/// creating the commands that we filter to the user depending on if they are: logged in and member/admin
-/// </summary>
+        /// <summary>
+        /// creating the commands that we filter to the user depending on if they are: logged in and member/admin
+        /// </summary>
         public class Commands
         {
             public string? CommandName { get; set; }
@@ -65,9 +65,9 @@ namespace UI
         }
 
 
-/// <summary>
-/// The command list that users select. We filter based on the MustBeAdmin and MustBeLoggedIn
-/// </summary>
+        /// <summary>
+        /// The command list that users select. We filter based on the MustBeAdmin and MustBeLoggedIn
+        /// </summary>
         public void BuildCommandList()
         {
             AllCommands = new List<Commands>(){
@@ -104,7 +104,7 @@ namespace UI
                     Command = "4",
                     Execution = ShutDown,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = false
+                    MustBeLoggedIn = false,
                 },
                 new Commands(){
                     CommandName = "[5] Find A User",
@@ -184,26 +184,52 @@ namespace UI
             return true;
         }
 
-/// <summary>
-/// This is what filters the list based on logged in and member/admin. this is called after each command finishes until the users tells the application to shut down
-/// </summary>
+        /// <summary>
+        /// This is what filters the list based on logged in and member/admin. this is called after each command finishes until the users tells the application to shut down
+        /// </summary>
         public void PrintAllValidCommandOptions()
         {
-            // Get all valid commands that can be run from AllCommands, based on is logged in and is admin
-            // ordered from generic to specific
-            List<Commands> validCommands = AllCommands
+
+            if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 1))
+            {
+                List<Commands> adminCommands = AllCommands.ToList();
+                foreach (var i in adminCommands)
+                {
+                    Console.WriteLine(i.CommandName);
+                }
+            }
+            else if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 0))
+            {
+                List<Commands> memberCommands = AllCommands
+                .Where(i => i.MustBeAdmin == (_currentSession.CurrentUser?.IsAdmin == 1))
+                .ToList();
+                foreach (var i in memberCommands)
+                {
+                    Console.WriteLine(i.CommandName);
+                }
+            }
+            else
+            {
+                List<Commands> validCommands = AllCommands
             .Where(i => i.MustBeLoggedIn == IsLoggedIn)
             .Where(i => i.MustBeAdmin == (_currentSession.CurrentUser?.IsAdmin == 1))
             .ToList();
-            foreach (var i in validCommands)
-            {
-                Console.WriteLine(i.CommandName);
+                foreach (var i in validCommands)
+                {
+                    Console.WriteLine(i.CommandName);
+                }
             }
+            // Get all valid commands that can be run from AllCommands, based on is logged in and is admin
+            // ordered from generic to specific
+
+
+
+
         }
 
-/// <summary>
-/// Starts the CLI application
-/// </summary>
+        /// <summary>
+        /// Starts the CLI application
+        /// </summary>
         public void Start()
         {
 
@@ -313,11 +339,16 @@ namespace UI
         //     Console.WriteLine("This is the user you're looking for: ");
         // }
 
-/// <summary>
-/// Creates a new user
-/// </summary>
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
         private void SignUp()
         {
+            if (IsLoggedIn == true)
+            {
+                Log.Error("You are already signed up and logged in!");
+                return;
+            }
             Member userToAdd = new Member();
 
             do
@@ -347,9 +378,9 @@ namespace UI
 
             //TODO: NEED TO CHECK EMAIL AGAINST DATABASE
 
-/// <summary>
-/// make sure the password is the same and not empty
-/// </summary>
+            /// <summary>
+            /// make sure the password is the same and not empty
+            /// </summary>
             string password1;
             string password2;
             do
@@ -376,10 +407,10 @@ namespace UI
             // Console.Write("Is this User an Admin?");
             userToAdd.IsAdmin = 0;
 
-/// <summary>
-/// trying to add the user to db and handle the exception
-/// </summary>
-/// <value></value>
+            /// <summary>
+            /// trying to add the user to db and handle the exception
+            /// </summary>
+            /// <value></value>
 
             try
             {
@@ -395,11 +426,16 @@ namespace UI
             }
         }
 
-/// <summary>
-/// logs in the user
-/// </summary>
+        /// <summary>
+        /// logs in the user
+        /// </summary>
         private void Login()
         {
+            if (IsLoggedIn == true)
+            {
+                Log.Error("You are already logged in!");
+                return;
+            }
             Member checkUser = new Member();
             do
             {
@@ -416,7 +452,7 @@ namespace UI
             checkUser.Password = password;
             checkUser = _userbl.CheckUserLogin(checkUser);
 
-            
+
             /// make suure rhe user was found and not empty
             if (checkUser.Username != null)
             {
@@ -436,12 +472,13 @@ namespace UI
             }
         }
 
-/// <summary>
-/// Creating a new restaurant from a logged in user
-/// </summary>
+        /// <summary>
+        /// Creating a new restaurant from a logged in user
+        /// </summary>
         private void CreateRestaurant()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in to do this!");
                 return;
             }
@@ -488,12 +525,13 @@ namespace UI
                 Log.Error($"This is the error: {ex}. Please make changes accordingly and try again!");
             }
         }
-/// <summary>
-/// A logged in user creating a Review
-/// </summary>
+        /// <summary>
+        /// A logged in user creating a Review
+        /// </summary>
         private void CreateReviewUI()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in to do this!");
                 return;
             }
@@ -504,8 +542,8 @@ namespace UI
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
             Restaurants foundRestaurant = SelectAReviewByRestaurantIdUI(restaurants, "Pick a restaurant by entering the corresponding [number]: ");
             newReview.RestaurantId = foundRestaurant.Id;
-        
-            
+
+
             newReview.TimeCreated = DateTime.Now;
             Console.WriteLine("Please enter your review details below: ");
 
@@ -561,12 +599,13 @@ namespace UI
 
         }
 
-/// <summary>
-/// An Admin can see all members in the database
-/// </summary>
+        /// <summary>
+        /// An Admin can see all members in the database
+        /// </summary>
         private void SeeAllMembers()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
             }
@@ -593,7 +632,8 @@ namespace UI
         /// </summary>
         private void SeeAllReviews()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
             }
@@ -606,9 +646,9 @@ namespace UI
 
         }
 
-/// <summary>
-/// User enters a string input to match if the restaurant is found. Any one can run this function
-/// </summary>
+        /// <summary>
+        /// User enters a string input to match if the restaurant is found. Any one can run this function
+        /// </summary>
         private void SeeRestrauntByName()
         {
             string input;
@@ -633,9 +673,9 @@ namespace UI
             Console.WriteLine(foundRestaurant);
         }
 
-/// <summary>
-/// User selects a restaurat from a list and returns reviews based on that selection. Anyone can use.
-/// </summary>
+        /// <summary>
+        /// User selects a restaurat from a list and returns reviews based on that selection. Anyone can use.
+        /// </summary>
         private void ViewReviewsByRestaurant()
         {
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
@@ -644,8 +684,19 @@ namespace UI
 
             List<RestaurantReviews> reviews = _reviewsbl.GetReviewsbyRestaurantIdBL(foundRestaurant.Id);
 
+            decimal sum = 0;
+            int n = 0;
+            for (int i = 0; i < reviews.Count; i++)
+            {
+                sum += Convert.ToDecimal(reviews[i].Rating);
+                n += 1;
+            }
+            decimal average = (sum / n);
+            decimal average1 = Math.Round(average, 2);
+
             Console.WriteLine($"Here are the reviews for: {foundRestaurant.Name}");
-            foreach (RestaurantReviews review in reviews )
+            Console.WriteLine($"Averge Rating: {average1}");
+            foreach (RestaurantReviews review in reviews)
             {
                 Console.WriteLine($"Title: {review.Title}\n\tBody: {review.Body}\n\tRating:{review.Rating}\n\tBy:{review.Username}\n");
             }
@@ -656,7 +707,7 @@ namespace UI
             int selection;
             bool valid = false;
 
-             do
+            do
             {
                 for (int i = 0; i < restaurants.Count; i++)
                 {
@@ -675,12 +726,13 @@ namespace UI
             } while (true);
         }
 
-/// <summary>
-/// Searches a User by ID. Must be an admin to use.
-/// </summary>
+        /// <summary>
+        /// Searches a User by ID. Must be an admin to use.
+        /// </summary>
         private void FindUsersByIdUI()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
             }
@@ -710,23 +762,24 @@ namespace UI
             }
         }
 
-/// <summary>
-/// Deletes a user from the database. Must be an admin to do so.
-/// </summary>
+        /// <summary>
+        /// Deletes a user from the database. Must be an admin to do so.
+        /// </summary>
         private void DeleteUser()
         {
-            if(IsLoggedIn == false){
+            if (IsLoggedIn == false)
+            {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
             }
-            
+
             Console.WriteLine("Delete User Requested: ");
 
         }
 
-/// <summary>
-/// Shuts down the program
-/// </summary>
+        /// <summary>
+        /// Shuts down the program
+        /// </summary>
         private static void ShutDown()
         {
             shutDownRequested = true;

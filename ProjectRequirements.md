@@ -12,7 +12,7 @@
 - add reviews to a restaurant as a user - done
 - view details of restaurants as a user - done
 - view reviews of restaurants as a user - done
-- calculate reviews’ average rating for each restaurant
+- calculate reviews’ average rating for each restaurant - done
 - search restaurant (by name, rating, zip code, etc.) - done by name
 
 ### Models 
@@ -27,7 +27,7 @@
 ### Additional requirements
 - Exception Handling
 - Input validation - done
-- Logging (to a file, no logging to the console)
+- Logging (to a file, no logging to the console) - done
 - At least 10 unit tests
 - Data should be persisted, (no data should be hard coded) - done
 - You should use a DB to store data - done
