@@ -142,7 +142,7 @@ namespace UI
                     MustBeLoggedIn = true
                 },
                 new Commands(){
-                    CommandName = "[10] View Reviews by Restaurat",
+                    CommandName = "[10] View Reviews by Restaurant",
                     Command = "10",
                     Execution = ViewReviewsByRestaurant,
                     MustBeAdmin = false,
@@ -667,10 +667,10 @@ namespace UI
             }
             else
             {
-                Console.WriteLine("We found {0}!", foundRestaurant.Name);
+                Console.WriteLine("\nWe found it!\n");
+                Console.WriteLine($"\tID: {foundRestaurant.Id}\n\tName: {foundRestaurant.Name}\n\tLocation: {foundRestaurant.Location} {foundRestaurant.ZipCode}\n");
+                
             }
-
-            Console.WriteLine(foundRestaurant);
         }
 
         /// <summary>
