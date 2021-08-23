@@ -32,7 +32,6 @@ DbContextOptions<restaurantreviewerContext> options = new DbContextOptionsBuilde
 /// <summary>
 /// context is our instance of the database
 /// </summary>
-
 var context = new restaurantreviewerContext(options);
 var session = new Session();
 

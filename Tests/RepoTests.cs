@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Tests
 {
@@ -14,16 +15,87 @@ namespace Tests
 
         private readonly DbContextOptions<Entity.restaurantreviewerContext> options;
 
-        public RepoTests() {
+        public RepoTests()
+        {
             options = new DbContextOptionsBuilder<Entity.restaurantreviewerContext>().UseSqlite("Filename=Test.db").Options;
             Seed();
         }
-        [Fact]
-        public void Test1()
-        {
 
+        [Fact]
+        public void GetAllUsersShouldGetAllUsers()
+        {
+            //Given
+            using (var context = new Entity.restaurantreviewerContext(options))
+            {
+                IUsersRepo _repo = new UsersRepo(context);
+                //When
+                var users = _repo.GetAllMembers();
+                //Then
+                Assert.Equal(4, users.Count);
+            }
         }
 
+        [Fact]
+        public void GetAllRestuarantsShouldGetAllRestaurants()
+        {
+            //Given
+            using (var context = new Entity.restaurantreviewerContext(options))
+            {
+                IRestaurantsRepo _repo = new RestaurantsRepo(context);
+                //When
+                var restaurants = _repo.GetAllRestaurants();
+                //Then
+                Assert.Equal(4, restaurants.Count);
+            }
+        }
+
+        [Fact]
+        public void GetAllReviewsShouldGetAllReviews()
+        {
+            //Given
+            using (var context = new Entity.restaurantreviewerContext(options))
+            {
+                IReviewsRepo _repo = new ReviewsRepo(context);
+                //When
+                var reviews = _repo.GetAllReviews();
+                //Then
+                Assert.Equal(4, reviews.Count);
+            }
+        }
+
+        [Fact]
+        public void CreateUserShouldCreateAUser()
+        {
+
+            //Arrange
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IUsersRepo _repo = new UsersRepo(arrangeContext);
+
+                //Act
+                _repo.CreateUser(
+                    new Models.Member
+                    {
+                        Id = 5,
+                        FirstName = "Bob",
+                        LastName = "Smith",
+                        Email = "bsmith@gmail.com",
+                        Username = "bsmith",
+                        Password = "password1234",
+                        IsAdmin = 0
+                    }
+                );
+            }
+
+            using (var assertContext = new Entity.restaurantreviewerContext(options))
+            {
+
+                Entity.User user = assertContext.Users.FirstOrDefault(user => user.Id == 5);
+
+                Assert.NotNull(user);
+                Assert.Equal("Bob", user.FirstName);
+            }
+        }
         private void Seed()
         {
             using (var context = new Entity.restaurantreviewerContext(options))
