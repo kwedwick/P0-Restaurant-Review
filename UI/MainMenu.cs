@@ -160,10 +160,7 @@ namespace UI
         }
 
         /// <summary>
-        /// When user types in Login, it calls the execution login function
-        /// then we are checking if the user is logged in or not
-        /// then execute the function
-        /// we filter the functions based on member acces (admin vs member)
+        /// It's taking in user's selection of the command and checking if it's acceptable
         /// /// /// </summary>
         public bool RunCommand(string? Input)
         {
@@ -552,8 +549,8 @@ namespace UI
             try
             {
                 newReview = _reviewsbl.AddReview(newReview);
-                Console.WriteLine("Member Created!\n \n");
-                Console.WriteLine($"ID: {newReview.Id}, Title: {newReview.Title}, Body: {newReview.Body}\n Rating: {newReview.Rating}\n");
+                Console.WriteLine("Review Created!\n \n");
+                Console.WriteLine($"Review ID: {newReview.Id}, Title: {newReview.Title}, Body: {newReview.Body}\n Rating: {newReview.Rating}\n UserID: {newReview.UserId}");
 
             }
             catch (Exception ex)
@@ -564,7 +561,9 @@ namespace UI
 
         }
 
-
+/// <summary>
+/// An Admin can see all members in the database
+/// </summary>
         private void SeeAllMembers()
         {
             if(IsLoggedIn == false){
@@ -588,6 +587,10 @@ namespace UI
                 Console.WriteLine($"ID: {restaurant.Id} Name:{restaurant.Name} Location: {restaurant.Location} Zip Code: {restaurant.ZipCode}");
             }
         }
+
+        /// <summary>
+        /// Returns all reviews in the database. Must be logged in and an admin
+        /// </summary>
         private void SeeAllReviews()
         {
             if(IsLoggedIn == false){
@@ -603,6 +606,9 @@ namespace UI
 
         }
 
+/// <summary>
+/// User enters a string input to match if the restaurant is found. Any one can run this function
+/// </summary>
         private void SeeRestrauntByName()
         {
             string input;
@@ -627,7 +633,9 @@ namespace UI
             Console.WriteLine(foundRestaurant);
         }
 
-
+/// <summary>
+/// User selects a restaurat from a list and returns reviews based on that selection. Anyone can use.
+/// </summary>
         private void ViewReviewsByRestaurant()
         {
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
@@ -667,6 +675,9 @@ namespace UI
             } while (true);
         }
 
+/// <summary>
+/// Searches a User by ID. Must be an admin to use.
+/// </summary>
         private void FindUsersByIdUI()
         {
             if(IsLoggedIn == false){
@@ -699,7 +710,9 @@ namespace UI
             }
         }
 
-
+/// <summary>
+/// Deletes a user from the database. Must be an admin to do so.
+/// </summary>
         private void DeleteUser()
         {
             if(IsLoggedIn == false){
@@ -711,6 +724,9 @@ namespace UI
 
         }
 
+/// <summary>
+/// Shuts down the program
+/// </summary>
         private static void ShutDown()
         {
             shutDownRequested = true;

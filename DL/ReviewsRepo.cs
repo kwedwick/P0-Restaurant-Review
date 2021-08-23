@@ -70,8 +70,8 @@ namespace DL
             )
             .Join(
                 _context.Users,
-                reviewJoin => reviewJoin.Id,
-                userJoin => userJoin.Id,
+                reviewJoin => reviewJoin.Username,
+                userJoin => userJoin.Id.ToString(),
                 (reviewJoin, userJoin) => new Models.RestaurantReviews
                 {
                     Id = reviewJoin.Id,

@@ -9,7 +9,7 @@
 - add a new user - done
 - ability to search user as admin - done
 - display details of a restaurant for user - done
-- add reviews to a restaurant as a user
+- add reviews to a restaurant as a user - done
 - view details of restaurants as a user - done
 - view reviews of restaurants as a user - done
 - calculate reviews’ average rating for each restaurant
