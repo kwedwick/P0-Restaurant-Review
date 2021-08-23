@@ -9,20 +9,32 @@ namespace UI
 {
     public class MainMenu : IMenu
     {
-
+/// <summary>
+/// calling the BL layers for users/restaurants and reviewslayer
+/// </summary>
         private IUsersBL _userbl;
 
         private IRestaurantsBL _restaurantbl;
 
         private IReviewsBL _reviewsbl;
 
-        //
+    /// <summary>
+    /// CurrentSession aka logged in user? is instantiated
+    /// IsLoggedIn is how we filter the commands
+    /// </summary>
         private Session _currentSession;
 
-        public bool IsLogedIn => _currentSession.CurrentUser is not null;
+        public bool IsLoggedIn => _currentSession.CurrentUser is not null;
 
         private List<Commands> AllCommands = new();
 
+/// <summary>
+/// the MainMenu constructer that is taking in all of the layers
+/// </summary>
+/// <param name="ubL"></param>
+/// <param name="rbL"></param>
+/// <param name="rvsbL"></param>
+/// <param name="session"></param>
         public MainMenu(IUsersBL ubL, IRestaurantsBL rbL, IReviewsBL rvsbL, Session session)
         {
             _userbl = ubL;
@@ -33,6 +45,9 @@ namespace UI
         }
         static bool shutDownRequested = false;
 
+/// <summary>
+/// creating the commands that we filter to the user depending on if they are: logged in and member/admin
+/// </summary>
         public class Commands
         {
             public string? CommandName { get; set; }
@@ -43,7 +58,9 @@ namespace UI
         }
 
 
-
+/// <summary>
+/// The command list that users select. We filter based on the MustBeAdmin and MustBeLoggedIn
+/// </summary>
         public void BuildCommandList()
         {
             AllCommands = new List<Commands>(){
@@ -163,12 +180,15 @@ namespace UI
             return true;
         }
 
+/// <summary>
+/// This is what filters the list based on logged in and member/admin. this is called after each command finishes until the users tells the application to shut down
+/// </summary>
         public void PrintAllValidCommandOptions()
         {
             // Get all valid commands that can be run from AllCommands, based on is logged in and is admin
             // ordered from generic to specific
             List<Commands> validCommands = AllCommands
-            .Where(i => i.MustBeLoggedIn == IsLogedIn)
+            .Where(i => i.MustBeLoggedIn == IsLoggedIn)
             .Where(i => i.MustBeAdmin == (_currentSession.CurrentUser?.IsAdmin == 1))
             .ToList();
             foreach (var i in validCommands)
@@ -177,7 +197,9 @@ namespace UI
             }
         }
 
-
+/// <summary>
+/// Starts the CLI application
+/// </summary>
         public void Start()
         {
 
@@ -287,7 +309,9 @@ namespace UI
         //     Console.WriteLine("This is the user you're looking for: ");
         // }
 
-
+/// <summary>
+/// Creates a new user
+/// </summary>
         private void SignUp()
         {
             Member userToAdd = new Member();
@@ -319,6 +343,9 @@ namespace UI
 
             //TODO: NEED TO CHECK EMAIL AGAINST DATABASE
 
+/// <summary>
+/// make sure the password is the same and not empty
+/// </summary>
             string password1;
             string password2;
             do
@@ -345,12 +372,18 @@ namespace UI
             // Console.Write("Is this User an Admin?");
             userToAdd.IsAdmin = 0;
 
+/// <summary>
+/// trying to add the user to db and handle the exception
+/// </summary>
+/// <value></value>
+
             try
             {
                 userToAdd = _userbl.AddUser(userToAdd);
 
                 Console.WriteLine("Member Created!\n \n");
                 Console.WriteLine($"ID: {userToAdd.Id}, Name: {userToAdd.FirstName} {userToAdd.LastName}, Email: {userToAdd.Email}, Username: {userToAdd.Username}, Admin: {userToAdd.IsAdmin}\n");
+                _currentSession.CurrentUser = userToAdd;
             }
             catch (Exception ex)
             {
@@ -358,6 +391,9 @@ namespace UI
             }
         }
 
+/// <summary>
+/// logs in the user
+/// </summary>
         private void Login()
         {
             Member checkUser = new Member();
@@ -376,6 +412,8 @@ namespace UI
             checkUser.Password = password;
             checkUser = _userbl.CheckUserLogin(checkUser);
 
+            
+            /// make suure rhe user was found and not empty
             if (checkUser.Username != null)
             {
                 try
@@ -394,6 +432,9 @@ namespace UI
             }
         }
 
+/// <summary>
+/// Creating a new restaurant from a logged in user
+/// </summary>
         private void CreateRestaurant()
         {
             Restaurants restaurantToAdd = new Restaurants();
@@ -439,9 +480,12 @@ namespace UI
                 Console.WriteLine($"This is the error: {ex}. Please make changes accordingly and try again!");
             }
         }
-
+/// <summary>
+/// A logged in user creating a Review
+/// </summary>
         private void CreateReviewUI()
         {
+            
             Review newReview = new Review();
             newReview.TimeCreated = DateTime.Now;
             Console.WriteLine("Please enter your review details below: ");
@@ -569,14 +613,14 @@ namespace UI
         {
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
 
-            Restaurants foundRestaurant = SelectAReviewByRestaurantIdUI(restaurants, "Pick a restaurant by ID: ");
+            Restaurants foundRestaurant = SelectAReviewByRestaurantIdUI(restaurants, "Pick a restaurant by entering the corresponding [number]: ");
 
             List<RestaurantReviews> reviews = _reviewsbl.GetReviewsbyRestaurantIdBL(foundRestaurant.Id);
 
-            Console.WriteLine($"Here are the reviews for {foundRestaurant.Name}");
+            Console.WriteLine($"Here are the reviews for: {foundRestaurant.Name}");
             foreach (RestaurantReviews review in reviews )
             {
-                Console.WriteLine($"Title: {review.Title}\n\tBody: {review.Body}\n\tRating:{review.Rating}\n\tBy:{review.Username}");
+                Console.WriteLine($"Title: {review.Title}\n\tBody: {review.Body}\n\tRating:{review.Rating}\n\tBy:{review.Username}\n");
             }
         }
         private Restaurants SelectAReviewByRestaurantIdUI(List<Restaurants> restaurants, string prompt)

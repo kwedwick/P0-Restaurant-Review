@@ -6,34 +6,34 @@
 
 ### Functionality 
 
-- add a new user 
-- ability to search user as admin
-- display details of a restaurant for user
+- add a new user - done
+- ability to search user as admin - done
+- display details of a restaurant for user - done
 - add reviews to a restaurant as a user
-- view details of restaurants as a user
-- view reviews of restaurants as a user
+- view details of restaurants as a user - done
+- view reviews of restaurants as a user - done
 - calculate reviews’ average rating for each restaurant
-- search restaurant (by name, rating, zip code, etc.)
+- search restaurant (by name, rating, zip code, etc.) - done by name
 
 ### Models 
 
-- User
-- Restaurant
-- Review
+- User - done
+- Restaurant - done
+- Review - done
 
 ### Note 
-- Add as much models as you would need for your design
+- Add as much models as you would need for your design - done
 
 ### Additional requirements
 - Exception Handling
-- Input validation
+- Input validation - done
 - Logging (to a file, no logging to the console)
 - At least 10 unit tests
 - Data should be persisted, (no data should be hard coded)
-- You should use a DB to store data
-- DB structure should be 3NF
-- Should have an ER Diagram
-- Code should have xml documentation 
+- You should use a DB to store data - done
+- DB structure should be 3NF - done
+- Should have an ER Diagram - done
+- Code should have xml documentation - somewhat done
 
 ### Tech Stack 
 - C# 

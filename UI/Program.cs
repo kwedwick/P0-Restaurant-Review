@@ -36,9 +36,24 @@ DbContextOptions<restaurantreviewerContext> options = new DbContextOptionsBuilde
 var context = new restaurantreviewerContext(options);
 var session = new Session();
 
+
+/// <summary>
+/// This is how the different projects communicate with the db. We need to inject the context into DL layer, then BL, layer, and then the MainMenu
+/// </summary>
+/// <param name="UsersRepo(context))"></param>
+/// <param name="RestaurantsRepo(context))"></param>
+/// <param name="ReviewsRepo(context))"></param>
+/// <param name="session"></param>
+/// <returns></returns>
+
 IMenu menu = new MainMenu(
     new UsersBL(new UsersRepo(context)), 
     new RestaurantsBL(new RestaurantsRepo(context)), 
     new ReviewsBL(new ReviewsRepo(context)),
     session);
+
+
+/// <summary>
+/// Calling the start function to start app
+/// </summary>
 menu.Start();

@@ -38,6 +38,11 @@ namespace DL
 
         public List<Models.RestaurantReviews> GetReviewsbyRestaurantId(int id)
         {
+            /// <summary>
+            /// First filter ReviewJoins by Restaurant, then join in Review data, pass info to second join and then add in username.
+            /// Need to change UserId to string so we can push in the user's username as string
+            /// </summary>
+            /// <returns>restaurantReviews</returns>
             List<Models.RestaurantReviews> restuarantReviews = _context.ReviewJoins
             .Where(reviewJoin => reviewJoin.RestaurantId == id)
             .Join(
@@ -59,33 +64,15 @@ namespace DL
                 userJoin => userJoin.Id,
                 (reviewJoin, userJoin) => new Models.RestaurantReviews
                 {
+                    Id = reviewJoin.Id,
+                    Title = reviewJoin.Title,
+                    Body = reviewJoin.Body,
+                    Rating = reviewJoin.Rating,
                     Username = userJoin.Username
                 }
             )
             .ToList();
             
-            // List<Models.RestaurantReviews> restuarantReviews = _context.ReviewJoins.Join(
-            //     _context.Reviews,
-            //     reviewJoin => reviewJoin.ReviewId,
-            //     review => review.Id,
-            //     (reviewJoin, review) => new Models.RestaurantReviews
-            //     {
-            //         Id = review.Id,
-            //         Title = review.Title,
-            //         Body = review.Body,
-            //         Rating = review.Rating
-            //     }
-            // ).Join(
-            //     _context.Users,
-            //     reviewJoin2 => 
-            //     userJoin => userJoin.Id,
-            //     (ReviewJoin, Review) => new Models.RestaurantReviews
-            //     {
-            //         Username = 
-            //     }
-            // ).
-            // ToList();
-
             return restuarantReviews;
 
         }
