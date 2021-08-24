@@ -363,37 +363,49 @@ namespace UI
                 userToAdd.LastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
 
-            Member checkingValidation;
+            string checkingUsername;
+            string createdUsername;
             do
             {
-                string createdUserName;
+
                 do
                 {
                     Console.Write("Please enter your username: ");
-                    createdUserName = Console.ReadLine();
-                } while (String.IsNullOrWhiteSpace(createdUserName));
+                    createdUsername = Console.ReadLine();
+                } while (String.IsNullOrWhiteSpace(createdUsername));
                 Console.WriteLine("Checking if username is unique....\n");
-                checkingValidation = _userbl.CheckUniqueUsername(createdUserName);
-                Console.WriteLine("Username was not unique! Try Again.");
-                Console.WriteLine(checkingValidation);
-            } while (userToAdd.Username == checkingValidation.Username);
-            Console.WriteLine("Username is unique!\n");
+                checkingUsername = _userbl.CheckUniqueUsername(createdUsername);
 
+                if(createdUsername == checkingUsername){
+                    Log.Error($"{createdUsername} was not unique! Try Again.");
+                }
+
+            } while (createdUsername == checkingUsername);
+            Console.WriteLine("Username is unique!\n");
+            userToAdd.Username = createdUsername;
+
+            string checkingEmail;
+            string createdEmail;
             do
             {
-                string createdEmail;
                 do
                 {
                     Console.Write("Please enter your email: ");
-                    userToAdd.Email = Console.ReadLine();
-                } while (String.IsNullOrWhiteSpace(userToAdd.Email));
+                    createdEmail = Console.ReadLine();
+                } while (String.IsNullOrWhiteSpace(createdEmail));
                 Console.WriteLine("Checking if email is unique....\n");
-                checkingValidation = _userbl.CheckUniqueUsername(createdEmail);
-                Console.WriteLine("Email was not unique! Try Again.");
+                checkingEmail = _userbl.CheckUniqueEmail(createdEmail);
 
-            } while (userToAdd.Email == checkingValidation.Email);
+
+                if (createdEmail == checkingEmail) {
+                    Log.Error($"{createdEmail} was not unique! Try Again.");
+                }
+
+
+    
+            } while (createdEmail == checkingEmail);
             Console.WriteLine("Email is unique!\n");
-
+            userToAdd.Email = createdEmail;
 
 
             /// <summary>
@@ -446,24 +458,27 @@ namespace UI
 
 
         /// <summary>
-        /// check is email is unique in the db
+        /// Check if email is unique in the db
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        private Member CheckEmailIsUnique(string email)
+        private string CheckEmailIsUnique(string email)
         {
-            Member returnedEmail = _userbl.CheckUniqueEmail(email);
-            return returnedEmail;
+            return email = _userbl.CheckUniqueEmail(email);
         }
-
-        private Member CheckUsernameIsUnique(string username)
+        /// <summary>
+        /// Check if username is unique in the db
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        private string CheckUsernameIsUnique(string username)
         {
-            Member returnedUesrname = _userbl.CheckUniqueUsername(username);
-            return returnedUesrname;
+            return username = _userbl.CheckUniqueUsername(username);
+            
         }
 
         /// <summary>
-        /// logs in the user
+        /// Log in User to application
         /// </summary>
         private void Login()
         {
@@ -600,9 +615,10 @@ namespace UI
             newReview.Body = body;
 
             int userRating = 0;
-            Console.WriteLine("Please enter your Rating 1-5: ");
+
             do
             {
+                Console.WriteLine("Please enter your Rating between 1-5: ");
                 try
                 {
                     userRating = Convert.ToInt32(Console.ReadLine());
@@ -615,7 +631,6 @@ namespace UI
                 //     userRating = 0;
                 //     Console.WriteLine
                 // }
-                Console.WriteLine("You must enter a number between 1-5");
 
             } while (userRating < 1 || userRating > 5);
             newReview.Rating = userRating;

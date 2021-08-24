@@ -71,22 +71,21 @@ namespace DL
             return new Models.Member();
         }
 
-        public Models.Member CheckUniqueEmail(string email)
+        public string CheckUniqueEmail(string email)
         {
-            Entities.User foundUser = _context.Users.FirstOrDefault(
+            var foundUser = _context.Users.FirstOrDefault(
                 user => user.Email == email
             );
 
             if (foundUser != null)
             {
-                return new Models.Member(foundUser.Email);
+                return email = foundUser.Email;
             }
-
-            return new Models.Member();
+            return email = "";
 
         }
 
-        public Models.Member CheckUniqueUsername(string username)
+        public string CheckUniqueUsername(string username)
         {
              Entities.User foundUser = _context.Users.FirstOrDefault(
                 user => user.Username == username
@@ -94,10 +93,9 @@ namespace DL
 
             if (foundUser != null)
             {
-                return new Models.Member(foundUser.Username);
+                return username = foundUser.Username;
             }
-
-            return new Models.Member();
+            return username = "";
         }
     }
 }

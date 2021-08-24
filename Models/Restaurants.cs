@@ -15,8 +15,8 @@ namespace Models
             this.ZipCode = zipCode;
         }
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Location { get; set; }
+        public string? Name { get; set; }
+        public string? Location { get; set; }
         //public double AvgRating => Ratings.Average();
         public int ZipCode { get; set; }
     }

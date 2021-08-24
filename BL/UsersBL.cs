@@ -32,12 +32,12 @@ namespace BL
             return _repo.GetUserLogin(member);
         }
 
-        public Member CheckUniqueEmail(string email)
+        public string CheckUniqueEmail(string email)
         {
             return _repo.CheckUniqueEmail(email);
         }
 
-        public Member CheckUniqueUsername(string username)
+        public string CheckUniqueUsername(string username)
         {
             return _repo.CheckUniqueUsername(username);
         }

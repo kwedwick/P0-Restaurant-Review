@@ -90,10 +90,10 @@ namespace Tests
             using (var assertContext = new Entity.restaurantreviewerContext(options))
             {
 
-                Entity.User user = assertContext.Users.FirstOrDefault(user => user.Id == 5);
+                Entity.User? user = assertContext.Users.FirstOrDefault(user => user.Id == 5);
 
                 Assert.NotNull(user);
-                Assert.Equal("Bob", user.FirstName);
+                Assert.Equal("Bob", user?.FirstName);
             }
         }
 
@@ -121,10 +121,10 @@ namespace Tests
             using (var assertContext = new Entity.restaurantreviewerContext(options))
             {
 
-                Entity.Restaurant restaurant = assertContext.Restaurants.FirstOrDefault(restaurant => restaurant.Id == 5);
+                Entity.Restaurant? restaurant = assertContext.Restaurants.FirstOrDefault(restaurant => restaurant.Id == 5);
 
                 Assert.NotNull(restaurant);
-                Assert.Equal("Bob's Burgers", restaurant.Name);
+                Assert.Equal("Bob's Burgers", restaurant?.Name);
             }
         }
 
@@ -209,11 +209,11 @@ namespace Tests
             {
                 //When
 
-                Entity.User user = assertContext.Users.FirstOrDefault(user => user.Username == "kwedwick" && user.Password == "password1234");
+                Entity.User? user = assertContext.Users.FirstOrDefault(user => user.Username == "kwedwick" && user.Password == "password1234");
                 //Then
                 Assert.NotNull(user);
-                Assert.Equal("kwedwick@gmail.com", user.Email);
-                Assert.Equal(1, user.Id);
+                Assert.Equal("kwedwick@gmail.com", user?.Email);
+                Assert.Equal(1, user?.Id);
             }
         }
         private void Seed()

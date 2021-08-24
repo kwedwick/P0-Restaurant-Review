@@ -26,8 +26,8 @@ namespace Models
         public int Id { get; set; }
 
         public System.DateTime TimeCreated { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
+        public string? Title { get; set; }
+        public string? Body { get; set; }
         public int Rating { get; set; }
     }
 
@@ -53,9 +53,9 @@ namespace Models
             this.RestaurantName = restaurantName;
             this.AvgRating = avgRating;
         }
-        public string Username {get; set;}
+        public string? Username {get; set;}
 
-        public string RestaurantName {get; set;}
+        public string? RestaurantName {get; set;}
 
         public decimal AvgRating {get; set; }
     }

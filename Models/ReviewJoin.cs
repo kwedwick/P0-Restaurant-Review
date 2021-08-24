@@ -25,12 +25,12 @@ namespace Models
 
         public int UserId { get; set; }
         public System.DateTime TimeCreated { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public int Rating { get; set; }
+        public string? Title { get; set; }
+        public string? Body { get; set; }
+        public int? Rating { get; set; }
 
-        public string Username {get; set;}
+        public string? Username {get; set;}
 
-        public string RestaurantName {get; set;}
+        public string? RestaurantName {get; set;}
     }
 }

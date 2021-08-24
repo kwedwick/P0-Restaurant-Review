@@ -13,9 +13,9 @@ namespace DL
 
         Member GetUserLogin(Member member);
 
-        Member CheckUniqueEmail(string email);
+        string CheckUniqueEmail(string email);
 
-        Member CheckUniqueUsername(string username);
+        string CheckUniqueUsername(string username);
     }
 }
 
