@@ -363,20 +363,38 @@ namespace UI
                 userToAdd.LastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
 
+            Member checkingValidation;
             do
             {
-                Console.Write("Please enter your username: ");
-                userToAdd.Username = Console.ReadLine();
-            } while (String.IsNullOrWhiteSpace(userToAdd.Username));
+                string createdUserName;
+                do
+                {
+                    Console.Write("Please enter your username: ");
+                    createdUserName = Console.ReadLine();
+                } while (String.IsNullOrWhiteSpace(createdUserName));
+                Console.WriteLine("Checking if username is unique....\n");
+                checkingValidation = _userbl.CheckUniqueUsername(createdUserName);
+                Console.WriteLine("Username was not unique! Try Again.");
+                Console.WriteLine(checkingValidation);
+            } while (userToAdd.Username == checkingValidation.Username);
+            Console.WriteLine("Username is unique!\n");
 
             do
             {
-                Console.Write("Please enter your email: ");
-                userToAdd.Email = Console.ReadLine();
-                // RegexUtilities.IsValidEmail(newUser.Email); 
-            } while (String.IsNullOrWhiteSpace(userToAdd.Email));
+                string createdEmail;
+                do
+                {
+                    Console.Write("Please enter your email: ");
+                    userToAdd.Email = Console.ReadLine();
+                } while (String.IsNullOrWhiteSpace(userToAdd.Email));
+                Console.WriteLine("Checking if email is unique....\n");
+                checkingValidation = _userbl.CheckUniqueUsername(createdEmail);
+                Console.WriteLine("Email was not unique! Try Again.");
 
-            //TODO: NEED TO CHECK EMAIL AGAINST DATABASE
+            } while (userToAdd.Email == checkingValidation.Email);
+            Console.WriteLine("Email is unique!\n");
+
+
 
             /// <summary>
             /// make sure the password is the same and not empty
@@ -424,6 +442,24 @@ namespace UI
             {
                 Log.Error($"This is the error: {ex}.\nPlease make changes accordingly and try again!");
             }
+        }
+
+
+        /// <summary>
+        /// check is email is unique in the db
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        private Member CheckEmailIsUnique(string email)
+        {
+            Member returnedEmail = _userbl.CheckUniqueEmail(email);
+            return returnedEmail;
+        }
+
+        private Member CheckUsernameIsUnique(string username)
+        {
+            Member returnedUesrname = _userbl.CheckUniqueUsername(username);
+            return returnedUesrname;
         }
 
         /// <summary>
@@ -669,7 +705,7 @@ namespace UI
             {
                 Console.WriteLine("\nWe found it!\n");
                 Console.WriteLine($"\tID: {foundRestaurant.Id}\n\tName: {foundRestaurant.Name}\n\tLocation: {foundRestaurant.Location} {foundRestaurant.ZipCode}\n");
-                
+
             }
         }
 

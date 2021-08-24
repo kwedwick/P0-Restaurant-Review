@@ -12,5 +12,9 @@ namespace BL
         Member SearchUserById(int id);
 
         Member CheckUserLogin(Member member);
+
+        Member CheckUniqueEmail(string email);
+
+        Member CheckUniqueUsername(string username);
     }
 }

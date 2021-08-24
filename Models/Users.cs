@@ -24,6 +24,11 @@
             this.IsAdmin = isAdmin;
         }
 
+        public Member(string username)
+        {
+            this.Username = username;
+        }
+
         public Member(string username, string password)
         {
             this.Username = username;
@@ -75,6 +80,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public int IsAdmin { get; set; }
+
     }
 
 }

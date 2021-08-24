@@ -31,5 +31,15 @@ namespace BL
         {
             return _repo.GetUserLogin(member);
         }
+
+        public Member CheckUniqueEmail(string email)
+        {
+            return _repo.CheckUniqueEmail(email);
+        }
+
+        public Member CheckUniqueUsername(string username)
+        {
+            return _repo.CheckUniqueUsername(username);
+        }
     }
 }

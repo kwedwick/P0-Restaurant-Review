@@ -70,5 +70,34 @@ namespace DL
             }
             return new Models.Member();
         }
+
+        public Models.Member CheckUniqueEmail(string email)
+        {
+            Entities.User foundUser = _context.Users.FirstOrDefault(
+                user => user.Email == email
+            );
+
+            if (foundUser != null)
+            {
+                return new Models.Member(foundUser.Email);
+            }
+
+            return new Models.Member();
+
+        }
+
+        public Models.Member CheckUniqueUsername(string username)
+        {
+             Entities.User foundUser = _context.Users.FirstOrDefault(
+                user => user.Username == username
+            );
+
+            if (foundUser != null)
+            {
+                return new Models.Member(foundUser.Username);
+            }
+
+            return new Models.Member();
+        }
     }
 }

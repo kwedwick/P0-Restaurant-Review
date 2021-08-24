@@ -12,6 +12,10 @@ namespace DL
         Member GetUserById(int id);
 
         Member GetUserLogin(Member member);
+
+        Member CheckUniqueEmail(string email);
+
+        Member CheckUniqueUsername(string username);
     }
 }
 
