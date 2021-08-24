@@ -96,6 +96,126 @@ namespace Tests
                 Assert.Equal("Bob", user.FirstName);
             }
         }
+
+        [Fact]
+        public void CreateRestaurantShouldCreateARestaurant()
+        {
+
+            //Arrange
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IRestaurantsRepo _repo = new RestaurantsRepo(arrangeContext);
+
+                //Act
+                _repo.CreateRestaurant(
+                    new Models.Restaurants
+                    {
+                        Id = 5,
+                        Name = "Bob's Burgers",
+                        Location = "555 Hollywood Ave, Hollywood, CA",
+                        ZipCode = 50670
+                    }
+                );
+            }
+
+            using (var assertContext = new Entity.restaurantreviewerContext(options))
+            {
+
+                Entity.Restaurant restaurant = assertContext.Restaurants.FirstOrDefault(restaurant => restaurant.Id == 5);
+
+                Assert.NotNull(restaurant);
+                Assert.Equal("Bob's Burgers", restaurant.Name);
+            }
+        }
+
+        [Fact]
+        public void CreateReviewShouldCreateAReview()
+        {
+
+            //Arrange
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IReviewsRepo _repo = new ReviewsRepo(arrangeContext);
+
+                //Act
+                _repo.CreateReview(
+                    new Models.CreateReview
+                    {
+                        Id = 5,
+                        TimeCreated = DateTime.Now,
+                        Title = "Just okay",
+                        Body = "This restaurant was okay but the staff were not as friendly. Karen was extremely rude. Food was good.",
+                        Rating = 3,
+                        UserId = 3,
+                        RestaurantId = 2
+                    }
+                );
+            }
+
+            using (var assertContext = new Entity.restaurantreviewerContext(options))
+            {
+
+                Entity.Review review = assertContext.Reviews.FirstOrDefault(review => review.Id == 5);
+
+                Entity.ReviewJoin reviewJoin = assertContext.ReviewJoins.FirstOrDefault(reviewJoin => reviewJoin.Id == 5);
+
+                Assert.NotNull(review);
+                Assert.Equal("Just okay", review.Title);
+
+                Assert.NotNull(reviewJoin);
+                Assert.Equal(3, reviewJoin.UserId);
+            }
+        }
+
+        [Fact]
+        public void GetRestaurantByNameShouldGetRestaurantByName()
+        {
+
+            //Arrange
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                //Given
+                using (var context = new Entity.restaurantreviewerContext(options))
+                {
+                    IRestaurantsRepo _repo = new RestaurantsRepo(context);
+                    //When
+                    var restaurants = _repo.GetRestaurantByName("Culvers");
+                    //Then
+                    Assert.Equal("Culvers", restaurants.Name);
+                    Assert.Equal(1, restaurants.Id);
+                }
+            }
+
+        }
+
+        [Fact]
+        public void LoginShouldReturnUser()
+        {
+            //Given
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IUsersRepo _repo = new UsersRepo(arrangeContext);
+
+                //Act
+                _repo.GetUserLogin(
+                    new Models.Member
+                    {
+                        Username = "kwedwick",
+                        Password = "password1234",
+                    }
+                );
+            }
+            using (var assertContext = new Entity.restaurantreviewerContext(options))
+            {
+                //When
+
+                Entity.User user = assertContext.Users.FirstOrDefault(user => user.Username == "kwedwick" && user.Password == "password1234");
+                //Then
+                Assert.NotNull(user);
+                Assert.Equal("kwedwick@gmail.com", user.Email);
+                Assert.Equal(1, user.Id);
+            }
+        }
         private void Seed()
         {
             using (var context = new Entity.restaurantreviewerContext(options))
