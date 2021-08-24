@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DL</name>
+    </assembly>
+    <members>
+        <member name="F:DL.UsersRepo._context">
+            <summary>
+            referencing the Entities context
+            </summary>
+        </member>
+        <member name="M:DL.UsersRepo.#ctor(DL.Entities.restaurantreviewerContext)">
+            <summary>
+            injecting the context into the UsersRepo class
+            </summary>
+            <param name="context"></param>
+        </member>
+    </members>
+</doc>

@@ -7,52 +7,31 @@ using DL;
 using System.IO;
 using System;
 
-/// <summary>
-/// This is how we are hiding our SMSS UserID and Password. 
-/// </summary>
+// This is how we are hiding our SMSS UserID and Password. 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
     .Build();
 
-
-/// <summary>
-///  We are getting the db and passing it through
-/// </summary>
+//  We are getting the db and passing it through
 string connectionString = configuration.GetConnectionString("p0restreviewerdb");
 
-/// <summary>
-/// We are creating the options to the server that we are using SQL Server
-/// </summary>
-
+// We are creating the options to the server that we are using SQL Server
 DbContextOptions<restaurantreviewerContext> options = new DbContextOptionsBuilder<restaurantreviewerContext>()
     .UseSqlServer(connectionString)
     .Options;
 
-/// <summary>
-/// context is our instance of the database
-/// </summary>
+// context is our instance of the database
 var context = new restaurantreviewerContext(options);
 var session = new Session();
 
 
-/// <summary>
-/// This is how the different projects communicate with the db. We need to inject the context into DL layer, then BL, layer, and then the MainMenu
-/// </summary>
-/// <param name="UsersRepo(context))"></param>
-/// <param name="RestaurantsRepo(context))"></param>
-/// <param name="ReviewsRepo(context))"></param>
-/// <param name="session"></param>
-/// <returns></returns>
-
+// This is how the different projects communicate with the db. We need to inject the context into DL layer, then BL, layer, and then the MainMenu
 IMenu menu = new MainMenu(
-    new UsersBL(new UsersRepo(context)), 
-    new RestaurantsBL(new RestaurantsRepo(context)), 
+    new UsersBL(new UsersRepo(context)),
+    new RestaurantsBL(new RestaurantsRepo(context)),
     new ReviewsBL(new ReviewsRepo(context)),
     session);
 
-
-/// <summary>
-/// Calling the start function to start app
-/// </summary>
+// Calling the start function to start app
 menu.Start();

@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Models</name>
+    </assembly>
+    <members>
+        <member name="T:Models.Restaurants">
+            <summary>
+            Restaurant contiains the location, array of ratings submitted by user, and the reviews
+            </summary>
+        </member>
+        <member name="T:Models.ReviewJoin">
+            <summary>
+            This Model is how we link Restaurants, Users, and Reviews together
+            </summary>
+        </member>
+        <member name="M:Models.ReviewJoin.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            this is the setup for the ReviewJoin Table
+            </summary>
+            <param name="id"></param>
+            <param name="reviewId"></param>
+            <param name="restaurantId"></param>
+            <param name="userId"></param>
+        </member>
+        <member name="M:Models.ReviewJoin.#ctor(System.Int32,System.String,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            This accepts users input, sends, and receives because UI-BL-DL-Entitiy
+            It's how we can double join
+            </summary>
+            <param name="id"></param>
+            <param name="title"></param>
+            <param name="body"></param>
+            <param name="rating"></param>
+            <param name="username"></param>
+            <param name="restaurantName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Models.Review">
+            <summary>
+            Basic Review class that holds just the review table properties
+            </summary>
+        </member>
+        <member name="M:Models.Review.#ctor">
+            <summary>
+            This is the basic constructor
+            </summary>
+        </member>
+        <member name="M:Models.Review.#ctor(System.Int32,System.DateTime,System.String,System.String,System.Int32)">
+            <summary>
+            Use this to get a review
+            </summary>
+            <param name="id"></param>
+            <param name="timeCreated"></param>
+            <param name="title"></param>
+            <param name="body"></param>
+            <param name="rating"></param>
+        </member>
+        <member name="M:Models.Review.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            Displaying basic review information
+            </summary>
+            <param name="title"></param>
+            <param name="body"></param>
+            <param name="rating"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Models.RestaurantReviews">
+            <summary>
+            This class is for getting reviews for a specific restaurant from the db and displaying it to the user 
+            </summary>
+        </member>
+        <member name="M:Models.RestaurantReviews.#ctor(System.Int32,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            this can be returned from the db
+            </summary>
+            <param name="id"></param>
+            <param name="title"></param>
+            <param name="body"></param>
+            <param name="rating"></param>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Models.RestaurantReviews.#ctor(System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.Decimal)">
+            <summary>
+            Can return this also from the RevewJoin entity to get avgRating from a method in of UI handling the calculation
+            </summary>
+            <param name="id"></param>
+            <param name="title"></param>
+            <param name="body"></param>
+            <param name="rating"></param>
+            <param name="username"></param>
+            <param name="restaurantName"></param>
+            <param name="avgRating"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Models.CreateReview">
+            <summary>
+            This is what the user inputs and is sent through BL/DL/Entities to store in the database.
+            </summary>
+        </member>
+        <member name="T:Models.IUsers">
+            <summary>
+            interface to contract the classes
+            </summary>
+        </member>
+        <member name="T:Models.Member">
+            <summary>
+            This is the base Iusers class
+            </summary>
+        </member>
+    </members>
+</doc>

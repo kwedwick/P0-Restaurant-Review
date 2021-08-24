@@ -10,19 +10,16 @@ namespace UI
 {
     public class MainMenu : IMenu
     {
-        /// <summary>
-        /// calling the BL layers for users/restaurants and reviewslayer
-        /// </summary>
+
+        // calling the BL layers for users/restaurants and reviewslayer
         private IUsersBL _userbl;
 
         private IRestaurantsBL _restaurantbl;
 
         private IReviewsBL _reviewsbl;
 
-        /// <summary>
-        /// CurrentSession aka logged in user? is instantiated
-        /// IsLoggedIn is how we filter the commands
-        /// </summary>
+        // CurrentSession aka logged in user? is instantiated
+        // IsLoggedIn is how we filter the commands
         private Session _currentSession;
 
         public bool IsLoggedIn => _currentSession.CurrentUser is not null;
@@ -164,11 +161,9 @@ namespace UI
         /// /// /// </summary>
         public bool RunCommand(string? Input)
         {
-
-
-
             /// checks if the command was acceptable
             var command = AllCommands.First(i => i.Command == Input);
+
             if (command is null)
             {
                 Log.Error("Invalid Command.  Try Again.");
@@ -190,6 +185,7 @@ namespace UI
         public void PrintAllValidCommandOptions()
         {
 
+            // Logged in and Admin
             if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 1))
             {
                 List<Commands> adminCommands = AllCommands.ToList();
@@ -197,7 +193,8 @@ namespace UI
                 {
                     Console.WriteLine(i.CommandName);
                 }
-            }
+            } 
+            //logged in not admin
             else if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 0))
             {
                 List<Commands> memberCommands = AllCommands
@@ -208,6 +205,7 @@ namespace UI
                     Console.WriteLine(i.CommandName);
                 }
             }
+            // not logged in
             else
             {
                 List<Commands> validCommands = AllCommands
@@ -219,12 +217,7 @@ namespace UI
                     Console.WriteLine(i.CommandName);
                 }
             }
-            // Get all valid commands that can be run from AllCommands, based on is logged in and is admin
-            // ordered from generic to specific
-
-
-
-
+            
         }
 
         /// <summary>
@@ -232,116 +225,28 @@ namespace UI
         /// </summary>
         public void Start()
         {
-
-
             Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below by entering the corresponding number: ");
 
             do
             {
+                //When app starts, it displays not logged in commands
                 PrintAllValidCommandOptions();
                 string startingInput;
                 do
                 {
+                    //user then makes a selections
                     startingInput = Console.ReadLine();
                 } while (String.IsNullOrWhiteSpace(startingInput));
 
+                //then puts in the user input
                 RunCommand(startingInput);
-                // switch (startingInput)
-                // {
-                //     case "0":
-                //         Login();
-                //         break;
-                //     case "1":
-                //         SignUp();
-                //         break;
-                //     case "2":
-                //         SeeAllRestaurants();
-                //         break;
-                //     case "3":
-                //         ShutDown();
-                //         break;
-                //     default:
-                //         Console.WriteLine("Please type your answer correctly!");
-                //         break;
-                // }
 
             } while (shutDownRequested == false);
-
-            // shutDownRequested = true;
-
-            // string[] choices = new string[] { 
-            //     "[0] Sign up", 
-            //     "[1] Find A User", 
-            //     "[2] View All Users", 
-            //     "[3] View All Restraunts", 
-            //     "[4] View All Reviews", 
-            //     "[5] Search Restaurant By Name", 
-            //     "[6] Add A Restraunt", 
-            //     "[7] Write a Review", 
-            //     "[8] Delete User", 
-            //     "[9] Exit" };
-
-            // do
-            // {
-            //     foreach (string choice in choices)
-            //     {
-            //         Console.WriteLine($"{choice}");
-            //     }
-
-            //     string userInput = Console.ReadLine();
-            //     switch (userInput)
-            //     {
-            //         case "0":
-            //             SignUp();
-            //             break;
-            //         case "1":
-            //             FindUsersByIdUI();
-            //             break;
-            //         case "2":
-            //             Console.WriteLine("You are viewing all of the members\n ---------- \n");
-            //             SeeAllMembers(); // done
-            //             break;
-            //         case "3":
-            //             SeeAllRestaurants(); // done
-            //             break;
-            //         case "4":
-            //             SeeAllReviews(); // done
-            //             break;
-            //         case "5":
-            //             SeeRestrauntByName(); // done
-            //             break;
-            //         case "6":
-            //             CreateRestaurant(); // done, need to return id
-            //             break;
-            //         case "7":
-            //             CreateReviewUI();
-            //             break;
-            //         case "8":
-            //             DeleteUser();
-            //             break;
-            //         case "9":
-            //             ShutDown();
-            //             break;
-            //         default:
-            //             Console.WriteLine("Please type your answer correctly!");
-            //             break;
-            //     }
-            // } while (shutDownRequested == false);
         }
 
-        // private Member FindMember(List<Member> members, string prompt)
-        // {
-        //     Console.WriteLine(prompt);
-        //     Console.WriteLine("Please enter user's username: ");
-
-
-
-        //     Console.WriteLine("This is the user you're looking for: ");
-        // }
-
-        /// <summary>
-        /// Creates a new user
-        /// </summary>
+/// <summary>
+/// This is how you create a user. It validates Email and Username as they must be unique.
+/// </summary>
         private void SignUp()
         {
             if (IsLoggedIn == true)
@@ -363,11 +268,11 @@ namespace UI
                 userToAdd.LastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
 
+
             string checkingUsername;
             string createdUsername;
             do
             {
-
                 do
                 {
                     Console.Write("Please enter your username: ");
@@ -400,17 +305,13 @@ namespace UI
                 if (createdEmail == checkingEmail) {
                     Log.Error($"{createdEmail} was not unique! Try Again.");
                 }
-
-
     
             } while (createdEmail == checkingEmail);
             Console.WriteLine("Email is unique!\n");
             userToAdd.Email = createdEmail;
 
 
-            /// <summary>
-            /// make sure the password is the same and not empty
-            /// </summary>
+            // make sure the password is the same and not empty
             string password1;
             string password2;
             do
@@ -433,15 +334,9 @@ namespace UI
             } while (password1 != password2);
 
             userToAdd.Password = password1;
-
-            // Console.Write("Is this User an Admin?");
             userToAdd.IsAdmin = 0;
 
-            /// <summary>
-            /// trying to add the user to db and handle the exception
-            /// </summary>
-            /// <value></value>
-
+            // trying to add the user to db and handle the exception
             try
             {
                 userToAdd = _userbl.AddUser(userToAdd);
@@ -504,7 +399,7 @@ namespace UI
             checkUser = _userbl.CheckUserLogin(checkUser);
 
 
-            /// make suure rhe user was found and not empty
+            // make suure rhe user was found and not empty
             if (checkUser.Username != null)
             {
                 try
@@ -668,6 +563,9 @@ namespace UI
             }
         }
 
+/// <summary>
+/// User can view all restaurants in the database
+/// </summary>
         private void SeeAllRestaurants()
         {
             Console.WriteLine("You are viewing all of the restaurants\n ---------- \n");
@@ -732,8 +630,8 @@ namespace UI
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
 
             Restaurants foundRestaurant = SelectAReviewByRestaurantIdUI(restaurants, "Pick a restaurant by entering the corresponding [number]: ");
-
-            List<RestaurantReviews> reviews = _reviewsbl.GetReviewsbyRestaurantIdBL(foundRestaurant.Id);
+            int foundId = foundRestaurant.Id;
+            List<RestaurantReviews> reviews = _reviewsbl.GetReviewsbyRestaurantIdBL(foundId);
 
             decimal sum = 0;
             int n = 0;
@@ -752,6 +650,12 @@ namespace UI
                 Console.WriteLine($"Title: {review.Title}\n\tBody: {review.Body}\n\tRating:{review.Rating}\n\tBy:{review.Username}\n");
             }
         }
+        /// <summary>
+        /// This prompts the user to select a restaurant from the list and returns the restaurant
+        /// </summary>
+        /// <param name="restaurants"></param>
+        /// <param name="prompt"></param>
+        /// <returns></returns>
         private Restaurants SelectAReviewByRestaurantIdUI(List<Restaurants> restaurants, string prompt)
         {
             Console.WriteLine(prompt);

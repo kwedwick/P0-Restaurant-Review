@@ -20,6 +20,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <DocumentationFile>UI-doc.xml</DocumentationFile>
   </PropertyGroup>
+
 
 </Project>

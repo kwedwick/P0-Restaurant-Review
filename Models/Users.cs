@@ -15,6 +15,9 @@
         int IsAdmin { get; set; }
         string Password { get; set; }
     }
+    /// <summary>
+    /// This is the base Iusers class
+    /// </summary>
     public class Member : IUsers
     {
 
@@ -61,17 +64,17 @@
             this.Email = email;
             this.IsAdmin = isAdmin;
         }
-    
+
         public Member(int id,
                       string lastName,
                       string email,
-                      int isAdmin) 
+                      int isAdmin)
         {
             this.Id = id;
             this.LastName = lastName;
             this.Email = email;
             this.IsAdmin = isAdmin;
-   
+
         }
         public int Id { get; set; }
         public string FirstName { get; set; }

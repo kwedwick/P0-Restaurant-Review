@@ -197,6 +197,7 @@ namespace Tests
                 IUsersRepo _repo = new UsersRepo(arrangeContext);
 
                 //Act
+                var loggedInUser =
                 _repo.GetUserLogin(
                     new Models.Member
                     {
@@ -204,18 +205,54 @@ namespace Tests
                         Password = "password1234",
                     }
                 );
-            }
-            using (var assertContext = new Entity.restaurantreviewerContext(options))
-            {
-                //When
 
-                Entity.User? user = assertContext.Users.FirstOrDefault(user => user.Username == "kwedwick" && user.Password == "password1234");
-                //Then
-                Assert.NotNull(user);
-                Assert.Equal("kwedwick@gmail.com", user?.Email);
-                Assert.Equal(1, user?.Id);
+                Assert.NotNull(loggedInUser);
+                Assert.Equal("kwedwick@gmail.com", loggedInUser.Email);
+                Assert.Equal(1, loggedInUser.Id);
             }
         }
+
+        [Fact]
+        public void LoginShouldReturnEmptyUser()
+        {
+            //Given
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IUsersRepo _repo = new UsersRepo(arrangeContext);
+
+                //Act
+                var loggedInUser =
+                _repo.GetUserLogin(
+                    new Models.Member
+                    {
+                        Username = "pShermin",
+                        Password = "42wallabyway",
+                    }
+                );
+
+                Assert.NotNull(loggedInUser);
+                Assert.Equal(null, loggedInUser.Email);
+                Assert.Equal(0, loggedInUser.Id);
+            }
+        }
+
+        [Fact]
+        public void GetReviewsByRestaurantIDShouldReturnAllReviewsForThatRestaurant()
+        {
+            //Given
+            using (var arrangeContext = new Entity.restaurantreviewerContext(options))
+            {
+                IReviewsRepo _repo = new ReviewsRepo(arrangeContext);
+
+                //Act
+                List<Models.RestaurantReviews> newReviews =
+                _repo.GetReviewsbyRestaurantId(3);
+
+                Assert.NotNull(newReviews);
+                Assert.Equal(1, newReviews.Count);
+            }
+        }
+
         private void Seed()
         {
             using (var context = new Entity.restaurantreviewerContext(options))

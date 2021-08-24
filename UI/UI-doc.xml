@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UI</name>
+    </assembly>
+    <members>
+        <member name="T:UI.IMenu">
+            <summary>
+            Menu Interface to enforce Start function
+            </summary>
+        </member>
+        <member name="M:UI.IMenu.Start">
+            <summary>
+            Starts the application
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.#ctor(BL.IUsersBL,BL.IRestaurantsBL,BL.IReviewsBL,UI.Session)">
+            <summary>
+            the MainMenu constructer that is taking in all of the layers
+            </summary>
+            <param name="ubL"></param>
+            <param name="rbL"></param>
+            <param name="rvsbL"></param>
+            <param name="session"></param>
+        </member>
+        <member name="T:UI.MainMenu.Commands">
+            <summary>
+            creating the commands that we filter to the user depending on if they are: logged in and member/admin
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.BuildCommandList">
+            <summary>
+            The command list that users select. We filter based on the MustBeAdmin and MustBeLoggedIn
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.RunCommand(System.String)">
+            <summary>
+            It's taking in user's selection of the command and checking if it's acceptable
+            /// /// </summary>
+        </member>
+        <member name="M:UI.MainMenu.PrintAllValidCommandOptions">
+            <summary>
+            This is what filters the list based on logged in and member/admin. this is called after each command finishes until the users tells the application to shut down
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.Start">
+            <summary>
+            Starts the CLI application
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SignUp">
+            <summary>
+            This is how you create a user. It validates Email and Username as they must be unique.
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.CheckEmailIsUnique(System.String)">
+            <summary>
+            Check if email is unique in the db
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.MainMenu.CheckUsernameIsUnique(System.String)">
+            <summary>
+            Check if username is unique in the db
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.MainMenu.Login">
+            <summary>
+            Log in User to application
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.CreateRestaurant">
+            <summary>
+            Creating a new restaurant from a logged in user
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.CreateReviewUI">
+            <summary>
+            A logged in user creating a Review
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SeeAllMembers">
+            <summary>
+            An Admin can see all members in the database
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SeeAllRestaurants">
+            <summary>
+            User can view all restaurants in the database
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SeeAllReviews">
+            <summary>
+            Returns all reviews in the database. Must be logged in and an admin
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SeeRestrauntByName">
+            <summary>
+            User enters a string input to match if the restaurant is found. Any one can run this function
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.ViewReviewsByRestaurant">
+            <summary>
+            User selects a restaurat from a list and returns reviews based on that selection. Anyone can use.
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.SelectAReviewByRestaurantIdUI(System.Collections.Generic.List{Models.Restaurants},System.String)">
+            <summary>
+            This prompts the user to select a restaurant from the list and returns the restaurant
+            </summary>
+            <param name="restaurants"></param>
+            <param name="prompt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.MainMenu.FindUsersByIdUI">
+            <summary>
+            Searches a User by ID. Must be an admin to use.
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.DeleteUser">
+            <summary>
+            Deletes a user from the database. Must be an admin to do so.
+            </summary>
+        </member>
+        <member name="M:UI.MainMenu.ShutDown">
+            <summary>
+            Shuts down the program
+            </summary>
+        </member>
+        <member name="T:UI.Session">
+            <summary>
+            This is how we get the session to store a logged in users info
+            It initializes as a null CurrentUser = not logged in
+            </summary>
+        </member>
+        <member name="P:UI.Session.CurrentUser">
+            <summary>
+            Sets CurrentUser to nullable type
+            </summary>
+        </member>
+    </members>
+</doc>

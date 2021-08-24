@@ -8,6 +8,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <DocumentationFile>BL-doc.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

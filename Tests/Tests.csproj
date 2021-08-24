@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-
+    <DocumentationFile>Tests-doc.xml</DocumentationFile>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
