@@ -9,5 +9,7 @@ namespace BL
         CreateReview AddReview(CreateReview review);
 
         List<RestaurantReviews> GetReviewsbyRestaurantIdBL(int id);
+
+        List<RestaurantReviews> SeeMyReviews(int id);
     }
 }

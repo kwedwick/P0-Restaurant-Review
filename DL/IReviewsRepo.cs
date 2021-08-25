@@ -10,5 +10,7 @@ namespace DL
         CreateReview CreateReview(CreateReview review);
 
         List<RestaurantReviews> GetReviewsbyRestaurantId(int id);
+
+        List<RestaurantReviews> GetMyReviews(int id);
     }
 }

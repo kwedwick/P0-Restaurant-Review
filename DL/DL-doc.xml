@@ -4,6 +4,25 @@
         <name>DL</name>
     </assembly>
     <members>
+        <member name="M:DL.ReviewsRepo.GetReviewsbyRestaurantId(System.Int32)">
+            <summary>
+            First filter ReviewJoins by Restaurant, then join in Review data pass info to second join and then add in username. Need to change. UserId to string so we can push in the user's username as string
+            </summary>
+            <param name="id"></param>
+            <returns>restuarantReviews</returns>
+        </member>
+        <member name="M:DL.ReviewsRepo.GetMyReviews(System.Int32)">
+            <summary>
+            Gets logged in users reviews
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DL.UsersRepo">
+            <summary>
+            Handles all User database requests
+            </summary>
+        </member>
         <member name="F:DL.UsersRepo._context">
             <summary>
             referencing the Entities context
@@ -14,6 +33,47 @@
             injecting the context into the UsersRepo class
             </summary>
             <param name="context"></param>
+        </member>
+        <member name="M:DL.UsersRepo.GetAllMembers">
+            <summary>
+            Gets all members in the database and returns a list
+            </summary>
+            <returns>List of members</returns>
+        </member>
+        <member name="M:DL.UsersRepo.CreateUser(Models.Member)">
+            <summary>
+            Inserts Member data
+            </summary>
+            <param name="member"></param>
+            <returns>user input and SQL created ID</returns>
+        </member>
+        <member name="M:DL.UsersRepo.GetUserById(System.Int32)">
+            <summary>
+            Get's member object by ID
+            </summary>
+            <param name="id"></param>
+            <returns>Single Member data</returns>
+        </member>
+        <member name="M:DL.UsersRepo.GetUserLogin(Models.Member)">
+            <summary>
+            Checks if username and password are matching a user and returns member
+            </summary>
+            <param name="member"></param>
+            <returns>Models.Member user</returns>
+        </member>
+        <member name="M:DL.UsersRepo.CheckUniqueEmail(System.String)">
+            <summary>
+            Finds if email is in the database
+            </summary>
+            <param name="email"></param>
+            <returns>string found email</returns>
+        </member>
+        <member name="M:DL.UsersRepo.CheckUniqueUsername(System.String)">
+            <summary>
+            Finds if username is in the database
+            </summary>
+            <param name="username"></param>
+            <returns>string found username</returns>
         </member>
     </members>
 </doc>

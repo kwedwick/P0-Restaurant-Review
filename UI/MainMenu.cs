@@ -134,7 +134,7 @@ namespace UI
                 new Commands(){
                     CommandName = "[9] Delete User",
                     Command = "9",
-                    Execution = DeleteUser,
+                    Execution = DeleteUserUI,
                     MustBeAdmin = true,
                     MustBeLoggedIn = true
                 },
@@ -145,13 +145,13 @@ namespace UI
                     MustBeAdmin = false,
                     MustBeLoggedIn = false
                 },
-                // new Commands(){
-                //     CommandName = "[] ",
-                //     Command = "",
-                //     Execution = ,
-                //     MustBeAdmin = false,
-                //     MustBeLoggedIn = false
-                // },
+                new Commands(){
+                    CommandName = "[11] See My Reviews",
+                    Command = "11",
+                    Execution = SeeMyReviews,
+                    MustBeAdmin = false,
+                    MustBeLoggedIn = true
+                },
 
             };
         }
@@ -161,8 +161,8 @@ namespace UI
         /// /// /// </summary>
         public bool RunCommand(string? Input)
         {
-            /// checks if the command was acceptable
-            var command = AllCommands.First(i => i.Command == Input);
+            // checks if the command was acceptable
+            var command = AllCommands.FirstOrDefault(i => i.Command == Input);
 
             if (command is null)
             {
@@ -174,7 +174,7 @@ namespace UI
                 Log.Error("System error");
                 return false;
             }
-            /// runs the assigned function per the user selected command
+            // runs the assigned function per the user selected command
             command.Execution.Invoke();
             return true;
         }
@@ -184,7 +184,6 @@ namespace UI
         /// </summary>
         public void PrintAllValidCommandOptions()
         {
-
             // Logged in and Admin
             if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 1))
             {
@@ -193,7 +192,7 @@ namespace UI
                 {
                     Console.WriteLine(i.CommandName);
                 }
-            } 
+            }
             //logged in not admin
             else if ((IsLoggedIn == true) && (_currentSession.CurrentUser?.IsAdmin == 0))
             {
@@ -217,7 +216,7 @@ namespace UI
                     Console.WriteLine(i.CommandName);
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -225,12 +224,13 @@ namespace UI
         /// </summary>
         public void Start()
         {
-            Console.WriteLine("Welcome to Restaurant Reviewer!\nPlease choose one of the following options below by entering the corresponding number: ");
+            Console.WriteLine("Welcome to Restaurant Reviewer!\n");
 
             do
             {
                 //When app starts, it displays not logged in commands
                 PrintAllValidCommandOptions();
+                Console.WriteLine("Please choose one of the following options below by entering the corresponding number: ");
                 string startingInput;
                 do
                 {
@@ -244,9 +244,9 @@ namespace UI
             } while (shutDownRequested == false);
         }
 
-/// <summary>
-/// This is how you create a user. It validates Email and Username as they must be unique.
-/// </summary>
+        /// <summary>
+        /// This is how you create a user. It validates Email and Username as they must be unique.
+        /// </summary>
         private void SignUp()
         {
             if (IsLoggedIn == true)
@@ -281,7 +281,8 @@ namespace UI
                 Console.WriteLine("Checking if username is unique....\n");
                 checkingUsername = _userbl.CheckUniqueUsername(createdUsername);
 
-                if(createdUsername == checkingUsername){
+                if (createdUsername == checkingUsername)
+                {
                     Log.Error($"{createdUsername} was not unique! Try Again.");
                 }
 
@@ -301,15 +302,14 @@ namespace UI
                 Console.WriteLine("Checking if email is unique....\n");
                 checkingEmail = _userbl.CheckUniqueEmail(createdEmail);
 
-
-                if (createdEmail == checkingEmail) {
+                if (createdEmail == checkingEmail)
+                {
                     Log.Error($"{createdEmail} was not unique! Try Again.");
                 }
-    
+
             } while (createdEmail == checkingEmail);
             Console.WriteLine("Email is unique!\n");
             userToAdd.Email = createdEmail;
-
 
             // make sure the password is the same and not empty
             string password1;
@@ -369,7 +369,7 @@ namespace UI
         private string CheckUsernameIsUnique(string username)
         {
             return username = _userbl.CheckUniqueUsername(username);
-            
+
         }
 
         /// <summary>
@@ -563,9 +563,9 @@ namespace UI
             }
         }
 
-/// <summary>
-/// User can view all restaurants in the database
-/// </summary>
+        /// <summary>
+        /// User can view all restaurants in the database
+        /// </summary>
         private void SeeAllRestaurants()
         {
             Console.WriteLine("You are viewing all of the restaurants\n ---------- \n");
@@ -720,7 +720,40 @@ namespace UI
         /// <summary>
         /// Deletes a user from the database. Must be an admin to do so.
         /// </summary>
-        private void DeleteUser()
+        private void DeleteUserUI()
+        {
+            if (IsLoggedIn == false)
+            {
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
+            Console.WriteLine("Delete User Requested: ");
+            SeeAllMembers();
+            Console.WriteLine("Please select the User ID to delete: ");
+
+            int userIdInput = 0;
+            do
+            {
+                Console.WriteLine("Please enter your Rating between 1-5: ");
+                try
+                {
+                    userIdInput = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("{0}, You didn't enter only numbers or a number between 1-5. Please try again.", ex);
+                }
+                // if(userRating < 1 || userRating > 5) {
+                //     userRating = 0;
+                //     Console.WriteLine
+                // }
+
+            } while (userIdInput == 0);
+            Console.WriteLine("Thank you for selecting. Route currently under construction!");
+
+        }
+
+        private void SeeMyReviews()
         {
             if (IsLoggedIn == false)
             {
@@ -728,7 +761,23 @@ namespace UI
                 return;
             }
 
-            Console.WriteLine("Delete User Requested: ");
+            int currentUserId = _currentSession.CurrentUser.Id;
+
+            List<RestaurantReviews> myReviews = _reviewsbl.SeeMyReviews(currentUserId);
+
+            if (myReviews != null)
+            {
+                foreach (RestaurantReviews review in myReviews)
+                {
+                    Console.WriteLine("-----------------------");
+                    Console.WriteLine($"Restaurant: {review.RestaurantName}\nTitle: {review.Title}\n\tBody: {review.Body}\n\tRating:{review.Rating}\n");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No reviews found :( Try writing some!");
+            }
+
 
         }
 

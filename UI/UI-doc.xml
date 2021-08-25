@@ -120,7 +120,7 @@
             Searches a User by ID. Must be an admin to use.
             </summary>
         </member>
-        <member name="M:UI.MainMenu.DeleteUser">
+        <member name="M:UI.MainMenu.DeleteUserUI">
             <summary>
             Deletes a user from the database. Must be an admin to do so.
             </summary>
