@@ -61,7 +61,6 @@ namespace UI
             public bool MustBeLoggedIn { get; set; }
         }
 
-
         /// <summary>
         /// The command list that users select. We filter based on the MustBeAdmin and MustBeLoggedIn
         /// </summary>
@@ -87,14 +86,14 @@ namespace UI
                     Command = "2",
                     Execution = SeeAllRestaurants,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = false
+                    MustBeLoggedIn = true
                 },
                 new Commands(){
                     CommandName = "[3] Search Restaurant by Name",
                     Command = "3",
                     Execution = SeeRestrauntByName,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = false
+                    MustBeLoggedIn = true
                 },
                 new Commands(){
                     CommandName = "[4] See My Reviews",
@@ -143,7 +142,7 @@ namespace UI
                     Command = "10",
                     Execution = ViewReviewsByRestaurant,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = false
+                    MustBeLoggedIn = true
                 },
                 new Commands(){
                     CommandName = "[11] Shut Down",
@@ -223,7 +222,6 @@ namespace UI
                     Console.WriteLine(i.CommandName);
                 }
             }
-
         }
 
         /// <summary>
@@ -274,7 +272,6 @@ namespace UI
                 Console.Write("Please enter your LAST name: ");
                 userToAdd.LastName = Console.ReadLine();
             } while (String.IsNullOrWhiteSpace(userToAdd.LastName));
-
 
             string checkingUsername;
             string createdUsername;
@@ -347,6 +344,7 @@ namespace UI
             try
             {
                 userToAdd = _userbl.AddUser(userToAdd);
+                _currentSession.CurrentUser = userToAdd;
 
                 Console.WriteLine("Member Created!\n \n");
                 Console.WriteLine($"ID: {userToAdd.Id}, Name: {userToAdd.FirstName} {userToAdd.LastName}, Email: {userToAdd.Email}, Username: {userToAdd.Username}, Admin: {userToAdd.IsAdmin}\n");
@@ -357,7 +355,6 @@ namespace UI
                 Log.Error($"This is the error: {ex}.\nPlease make changes accordingly and try again!");
             }
         }
-
 
         /// <summary>
         /// Check if email is unique in the db

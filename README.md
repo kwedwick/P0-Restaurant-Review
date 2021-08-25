@@ -20,11 +20,11 @@ This project falls under the mit license. Please visit [mit](https://choosealice
 
 ## Tech Stack
 
-- C# 
-- Xunit or NUnit
+- C#
+- Xunit
 - SQLServer DB 
 - EF Core 
-- Serilog or Nlog (or any other logging frameworks) 
+- Serilog 
 
 ## ER Diagram
 ![P0 Tables](./assets/P0%20ER%20Diagram.png)
@@ -32,7 +32,7 @@ This project falls under the mit license. Please visit [mit](https://choosealice
 I'd like to thank my groupmates Du Tran, Andrew Carson, and Mariah McMurren for their encouragement!
 
 ## Test
-This application uses Unix Testing. Simply navigate to the Tests folder and use dotnet test.
+This application uses Unix Testing. Simply navigate to the Tests folder and use 'dotnet test'.
     
 ## Questions
 The author of this project is Keegan Wedwick. You can reach them via [email](mailto:kwedwick@gmail.com).
