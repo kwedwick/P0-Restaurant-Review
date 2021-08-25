@@ -97,11 +97,11 @@ namespace UI
                     MustBeLoggedIn = false
                 },
                 new Commands(){
-                    CommandName = "[4] Shut Down",
+                    CommandName = "[4] See My Reviews",
                     Command = "4",
-                    Execution = ShutDown,
+                    Execution = SeeMyReviews,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = false,
+                    MustBeLoggedIn = true
                 },
                 new Commands(){
                     CommandName = "[5] Find A User",
@@ -132,10 +132,10 @@ namespace UI
                     MustBeLoggedIn = true,
                 },
                 new Commands(){
-                    CommandName = "[9] Delete User",
+                    CommandName = "[9] Create Restaurant",
                     Command = "9",
-                    Execution = DeleteUserUI,
-                    MustBeAdmin = true,
+                    Execution = CreateRestaurant,
+                    MustBeAdmin = false,
                     MustBeLoggedIn = true
                 },
                 new Commands(){
@@ -146,11 +146,18 @@ namespace UI
                     MustBeLoggedIn = false
                 },
                 new Commands(){
-                    CommandName = "[11] See My Reviews",
+                    CommandName = "[11] Shut Down",
                     Command = "11",
-                    Execution = SeeMyReviews,
+                    Execution = ShutDown,
                     MustBeAdmin = false,
-                    MustBeLoggedIn = true
+                    MustBeLoggedIn = false,
+                },
+                new Commands(){
+                    CommandName = "[12] Logout",
+                    Command = "12",
+                    Execution = Logout,
+                    MustBeAdmin = false,
+                    MustBeLoggedIn = true,
                 },
 
             };
@@ -462,8 +469,8 @@ namespace UI
             try
             {
                 restaurantToAdd = _restaurantbl.AddRestaurant(restaurantToAdd);
-                Console.WriteLine("Member Created!\n \n");
-                Console.WriteLine($"ID: {restaurantToAdd.Id}, Name: {restaurantToAdd.Name}, Location: {restaurantToAdd.Location} {restaurantToAdd.ZipCode}\n");
+                Console.WriteLine("Restaurant Created!\n\n");
+                Console.WriteLine($"ID: {restaurantToAdd.Id}\nName: {restaurantToAdd.Name}\nLocation: {restaurantToAdd.Location} {restaurantToAdd.ZipCode}\n");
 
             }
             catch (Exception ex)
@@ -572,7 +579,7 @@ namespace UI
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
             foreach (Restaurants restaurant in restaurants)
             {
-                Console.WriteLine($"ID: {restaurant.Id} Name:{restaurant.Name} Location: {restaurant.Location} Zip Code: {restaurant.ZipCode}");
+                Console.WriteLine($"ID: {restaurant.Id} Name: {restaurant.Name}\nLocation: {restaurant.Location} {restaurant.ZipCode}\n");
             }
         }
 
@@ -780,12 +787,25 @@ namespace UI
 
 
         }
+        
+        private void Logout()
+        {
+             if (IsLoggedIn == false)
+            {
+                Log.Error("You must be logged in and an admin to do this!");
+                return;
+            }
+            string firstName = _currentSession.CurrentUser.FirstName;
+            _currentSession.CurrentUser = null;
+            Log.Debug($"You have successfully logged out! See you next time, {firstName}!");
+        }
 
         /// <summary>
         /// Shuts down the program
         /// </summary>
         private static void ShutDown()
         {
+            Log.Debug("Shutting down....Goodbye!");
             shutDownRequested = true;
         }
     }

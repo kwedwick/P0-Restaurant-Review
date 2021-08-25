@@ -35,15 +35,15 @@ namespace DL
 
         public Models.Restaurants CreateRestaurant(Models.Restaurants restaurant)
         {
-            _context.Add(
-                new Entities.Restaurant
+            var newEntity = new Entities.Restaurant
                 {
                     Name = restaurant.Name,
                     Location = restaurant.Location,
                     Zipcode = restaurant.ZipCode
-                }
-            );
+                };
+            _context.Restaurants.Add(newEntity);
             _context.SaveChanges();
+            restaurant.Id = newEntity.Id;
             return restaurant;
         }
 
