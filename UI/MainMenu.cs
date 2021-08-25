@@ -554,7 +554,7 @@ namespace UI
         /// </summary>
         private void SeeAllMembers()
         {
-            if (IsLoggedIn == false)
+            if ((IsLoggedIn == false) && (_currentSession.CurrentUser?.IsAdmin == 0 || _currentSession.CurrentUser == null))
             {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
@@ -690,7 +690,7 @@ namespace UI
         /// </summary>
         private void FindUsersByIdUI()
         {
-            if (IsLoggedIn == false)
+            if ((IsLoggedIn == false) && (_currentSession.CurrentUser?.IsAdmin == 0 || _currentSession.CurrentUser == null))
             {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
@@ -726,7 +726,7 @@ namespace UI
         /// </summary>
         private void DeleteUserUI()
         {
-            if (IsLoggedIn == false)
+            if ((IsLoggedIn == false) && (_currentSession.CurrentUser?.IsAdmin == 0 || _currentSession.CurrentUser == null))
             {
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
