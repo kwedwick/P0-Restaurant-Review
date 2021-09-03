@@ -556,7 +556,7 @@ namespace UI
         {
             if ((IsLoggedIn == false) && (_currentSession.CurrentUser?.IsAdmin == 0 || _currentSession.CurrentUser == null))
             {
-                Log.Error("You must be logged in and an admin to do this!");
+                Log.Error("You must be logged in as an admin to do this!");
                 return;
             }
             List<Member> members = _userbl.ViewAllUsers();
@@ -572,7 +572,7 @@ namespace UI
         /// </summary>
         private void SeeAllRestaurants()
         {
-            Console.WriteLine("You are viewing all of the restaurants\n ---------- \n");
+            Console.WriteLine("You are viewing all restaurants\n ----------------- \n");
             List<Restaurants> restaurants = _restaurantbl.ViewAllRestaurants();
             foreach (Restaurants restaurant in restaurants)
             {
@@ -590,7 +590,7 @@ namespace UI
                 Log.Error("You must be logged in and an admin to do this!");
                 return;
             }
-            Console.WriteLine("You are viewing all of the reviews\n ---------- \n");
+            Console.WriteLine("You are viewing all of the reviews\n ----------------- \n");
             List<Review> reviews = _reviewsbl.ViewAllReviews();
             foreach (Review review in reviews)
             {
